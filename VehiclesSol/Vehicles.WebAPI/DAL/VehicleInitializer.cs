@@ -9,7 +9,7 @@ using Vehicles.Dal;
 
 namespace Vehicles.WebAPI.DAL
 {
-    public class VehicleInitializer : CreateDatabaseIfNotExists<VehicleContext>
+    public class VehicleInitializer : DropCreateDatabaseAlways<VehicleContext>
     {
         protected override void Seed(VehicleContext context)
         {
@@ -33,8 +33,10 @@ namespace Vehicles.WebAPI.DAL
             new VehicleModelModel{MakeId=2,Name="X6"},
             new VehicleModelModel{MakeId=3,Name="C3"},
             new VehicleModelModel{MakeId=3,Name="C4"},
-            new VehicleModelModel{MakeId=4,Name="Punto"},
-            new VehicleModelModel{MakeId=4,Name="Panda"}
+            new VehicleModelModel{MakeId=4,Name="Yaris"},
+            new VehicleModelModel{MakeId=4,Name="Auris"},
+            new VehicleModelModel{MakeId=5,Name="Punto"},
+            new VehicleModelModel{MakeId=5,Name="Panda"}
             };
             vehicleModels.ForEach(s => context.VehicleModels.Add(s));
             context.SaveChanges();

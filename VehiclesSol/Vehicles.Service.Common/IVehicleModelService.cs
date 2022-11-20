@@ -11,9 +11,10 @@ namespace Vehicles.Service.Common
     public interface IVehicleModelService
     {
         DbSet<VehicleModelModel> ReadAllVehicleMakes();
-        VehicleModelModel ReadVehiclesModelById(int id);
-        void AddNewVehicleModel(VehicleModelModel vehicleModelModel);
-        VehicleModelModel UpdateVehicleModelName(VehicleModelModel vehicleModelModel);
-        void DeleteVehicleModelById(int id);
+        Task<VehicleModelModel> ReadVehiclesModelByIdAsync(int id);
+        Task<List<VehicleModelModel>> ReadVehicleModelByVehicleMakeNameAsync(string name);
+        Task<bool> AddNewVehicleModelAsync(VehicleModelModel vehicleModelModel);
+        Task<bool> UpdateVehicleModelNameAsync(VehicleModelModel vehicleModelModel);
+        Task<bool> DeleteVehicleModelByIdAsync(int id);
     }
 }

@@ -8,6 +8,7 @@ using AutoMapper;
 using Vehicles.WebAPI.Models;
 using Vehicles.Service.Common;
 using Vehicles.Model;
+using System.Threading.Tasks;
 
 namespace Vehicles.WebAPI.Controllers
 {
@@ -30,10 +31,10 @@ namespace Vehicles.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("api/readVehiclesMakeById/{id}")]
-        public HttpResponseMessage ReadVehiclesMakeById(int id)
+        [Route("api/readVehicleMakeById/{id}")]
+        public async Task<HttpResponseMessage> ReadVehiclesMakeByIdAsync(int id)
         {
-            var vehicleMakeModel = this.VehicleService.ReadVehiclesMakeById(id);
+            var vehicleMakeModel = await this.VehicleService.ReadVehiclesMakeByIdAsync(id);
             if (vehicleMakeModel == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -43,40 +44,39 @@ namespace Vehicles.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/addNewVehicleMake")]
-        public HttpResponseMessage AddNewVehicleMake([FromBody] VehicleMake vehicleMake)
+        public async Task<HttpResponseMessage> AddNewVehicleMakeAsync([FromBody] VehicleMake vehicleMake)
         {
-            if (!ModelState.IsValid)
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            if (vehicleMake.Name == null)
+                return Request.CreateResponse(HttpStatusCode.PreconditionFailed);
 
             var config = new MapperConfiguration(cfg => { cfg.CreateMap<VehicleMake, VehicleMakeModel>(); });
             this.Mapper = config.CreateMapper();
             VehicleMakeModel vehicleMakeModel = this.Mapper.Map<VehicleMake, VehicleMakeModel>(vehicleMake);
 
-            this.VehicleService.AddNewVehicleMake(vehicleMakeModel);
+            await this.VehicleService.AddNewVehicleMakeAsync(vehicleMakeModel);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [HttpPut]
         [Route("api/updateVehicleMakeName")]
-        public HttpResponseMessage UpdateVehicleMakeName([FromBody] VehicleMakeModel vehicleMakeModel)
+        public async Task<HttpResponseMessage> UpdateVehicleMakeNameAsync([FromBody] VehicleMakeModel vehicleMakeModel)
         {
-            VehicleMakeModel updatedVehicleMakeModel = this.VehicleService.UpdateVehicleMakeName(vehicleMakeModel);
-            if (updatedVehicleMakeModel == null)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
+            if (await this.VehicleService.UpdateVehicleMakeNameAsync(vehicleMakeModel))
+                return Request.CreateResponse(HttpStatusCode.OK);
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.NotFound); 
         }
 
 
         [HttpDelete]
         [Route("api/deleteVehicleMakeById/{id}")]
-        public HttpResponseMessage DeleteVehicleMakeById(int id)
+        public async Task<HttpResponseMessage> DeleteVehicleMakeByIdAsync(int id)
         {
-            this.VehicleService.DeleteVehicleMakeById(id);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            if (await this.VehicleService.DeleteVehicleMakeByIdAsync(id))
+                return Request.CreateResponse(HttpStatusCode.OK);
+
+            return Request.CreateResponse(HttpStatusCode.NotFound);
         }
     }
 }

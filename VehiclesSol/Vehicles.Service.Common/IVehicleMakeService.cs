@@ -11,10 +11,10 @@ namespace Vehicles.Service.Common
     public interface IVehicleMakeService
     {
         DbSet<VehicleMakeModel> ReadAllVehicleMakes();
-        VehicleMakeModel ReadVehiclesMakeById(int id);
-        void AddNewVehicleMake(VehicleMakeModel vehicleMakeModel);
-        VehicleMakeModel UpdateVehicleMakeName(VehicleMakeModel vehicleMakeModel);
-        void DeleteVehicleMakeById(int id);
+        Task<VehicleMakeModel> ReadVehiclesMakeByIdAsync(int id);
+        Task<bool> AddNewVehicleMakeAsync(VehicleMakeModel vehicleMakeModel);
+        Task<bool> UpdateVehicleMakeNameAsync(VehicleMakeModel vehicleMakeModel);
+        Task<bool> DeleteVehicleMakeByIdAsync(int id);
 
     }
 }

@@ -18,9 +18,9 @@ namespace Vehicles.Service
             return db.VehicleMakes;
         }
 
-        public VehicleMakeModel ReadVehiclesMakeById(int id)
+        public async Task<VehicleMakeModel> ReadVehiclesMakeByIdAsync(int id)
         {
-            VehicleMakeModel vehicleMakeModel = db.VehicleMakes.Find(id);
+            VehicleMakeModel vehicleMakeModel = await db.VehicleMakes.FindAsync(id);
 
             if (vehicleMakeModel == null)
             {
@@ -29,27 +29,30 @@ namespace Vehicles.Service
             return vehicleMakeModel;
         }
 
-        public void AddNewVehicleMake(VehicleMakeModel vehicleMakeModel)
+        public async Task<bool> AddNewVehicleMakeAsync(VehicleMakeModel vehicleMakeModel)
         {
             db.VehicleMakes.Add(vehicleMakeModel);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
+            return true;
         }
 
-        public VehicleMakeModel UpdateVehicleMakeName(VehicleMakeModel vehicleMakeModel)
+        public async Task<bool> UpdateVehicleMakeNameAsync(VehicleMakeModel vehicleMakeModel)
         {
-            VehicleMakeModel updatedVehicleMakeModel = db.VehicleMakes.Find(vehicleMakeModel.Id);
+            var updatedVehicleMakeModel = await db.VehicleMakes.FindAsync(vehicleMakeModel.Id);
             if (updatedVehicleMakeModel == null)
             {
-                return null;
+                return false;
             }
             updatedVehicleMakeModel.Name = vehicleMakeModel.Name;
-            db.SaveChanges();
-            return updatedVehicleMakeModel;
+            await db.SaveChangesAsync();
+            return true;
         }
 
-        public void DeleteVehicleMakeById(int id)
+        public async Task<bool> DeleteVehicleMakeByIdAsync(int id)
         {
-            VehicleMakeModel vehicleMakeModel = db.VehicleMakes.Find(id);
+            var vehicleMakeModel = await db.VehicleMakes.FindAsync(id);
+            if (vehicleMakeModel == null)
+                return false;
             db.Entry(vehicleMakeModel).State = EntityState.Deleted;
 
             // delete models referencing the vehicle make that's being deleted
@@ -61,7 +64,8 @@ namespace Vehicles.Service
                 db.Entry(vm).State = EntityState.Deleted;
             }
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
+            return true;
         }
     }
 }

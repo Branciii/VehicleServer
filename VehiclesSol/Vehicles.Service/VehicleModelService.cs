@@ -18,9 +18,9 @@ namespace Vehicles.Service
             return db.VehicleModels;
         }
 
-        public VehicleModelModel ReadVehiclesModelById(int id)
+        public async Task<VehicleModelModel> ReadVehiclesModelByIdAsync(int id)
         {
-            VehicleModelModel vehicleModelModel = db.VehicleModels.Find(id);
+            VehicleModelModel vehicleModelModel = await db.VehicleModels.FindAsync(id);
 
             if (vehicleModelModel == null)
             {
@@ -29,29 +29,43 @@ namespace Vehicles.Service
             return vehicleModelModel;
         }
 
-        public void AddNewVehicleModel(VehicleModelModel vehicleModelModel)
+        public async Task<List<VehicleModelModel>> ReadVehicleModelByVehicleMakeNameAsync(string name)
+        {
+            var MakeId = from vm in db.VehicleMakes
+                         where vm.Name.Equals(name)
+                         select vm.Id;
+            var vehicleModels = await db.VehicleModels.Where(vm => vm.MakeId == MakeId.FirstOrDefault()).ToListAsync();
+ 
+            return vehicleModels;
+        }
+
+        public async Task<bool> AddNewVehicleModelAsync(VehicleModelModel vehicleModelModel)
         {
             db.VehicleModels.Add(vehicleModelModel);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
+            return true;
         }
 
-        public VehicleModelModel UpdateVehicleModelName(VehicleModelModel vehicleModelModel)
+        public async Task<bool> UpdateVehicleModelNameAsync(VehicleModelModel vehicleModelModel)
         {
-            VehicleModelModel updatedVehicleModelModel = db.VehicleModels.Find(vehicleModelModel.Id);
+            var updatedVehicleModelModel = await db.VehicleModels.FindAsync(vehicleModelModel.Id);
             if (updatedVehicleModelModel == null)
             {
-                return null;
+                return false;
             }
             updatedVehicleModelModel.Name = vehicleModelModel.Name;
-            db.SaveChanges();
-            return updatedVehicleModelModel;
+            await db.SaveChangesAsync();
+            return true;
         }
 
-        public void DeleteVehicleModelById(int id)
+        public async Task<bool> DeleteVehicleModelByIdAsync(int id)
         {
-            VehicleModelModel vehicleModelModel = db.VehicleModels.Find(id);
+            var vehicleModelModel = await db.VehicleModels.FindAsync(id);
+            if (vehicleModelModel == null)
+                return false;
             db.Entry(vehicleModelModel).State = EntityState.Deleted;
-            db.SaveChanges();
+            await db.SaveChangesAsync();
+            return true;
         }
     }
 }
