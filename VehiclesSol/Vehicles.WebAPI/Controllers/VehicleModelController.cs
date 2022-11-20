@@ -4,65 +4,78 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Threading.Tasks;
-using Vehicles.WebAPI.DAL;
-using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
 using Vehicles.WebAPI.Models;
+using Vehicles.Service.Common;
+using Vehicles.Model;
+using AutoMapper;
 
 namespace Vehicles.WebAPI.Controllers
 {
     public class VehicleModelController : ApiController
     {
-        private VehicleContext db = new VehicleContext();
+        private IVehicleModelService VehicleService { get; set; }
+        private IMapper Mapper { get; set; }
+
+        public VehicleModelController(IVehicleModelService vehicleService)
+        {
+            this.VehicleService = vehicleService;
+        }
 
         [HttpGet]
         [Route("api/readAllVehicleModels")]
         public HttpResponseMessage ReadAllVehicleModels()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, db.VehicleModels);
+            return Request.CreateResponse(HttpStatusCode.OK, this.VehicleService.ReadAllVehicleMakes());
         }
 
+        
         [HttpGet]
         [Route("api/readVehicleModelById/{id}")]
         public HttpResponseMessage ReadVehicleModelById(int id)
         {
-            VehicleModel vehicleModel = db.VehicleModels.Find(id);
-            if (vehicleModel == null)
+            var vehicleModelModel = this.VehicleService.ReadVehiclesModelById(id);
+            if (vehicleModelModel == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
-            return Request.CreateResponse(HttpStatusCode.OK, vehicleModel) ;
+            return Request.CreateResponse(HttpStatusCode.OK, vehicleModelModel);
         }
 
+        
         [HttpPost]
         [Route("api/addNewVehicleModel")]
         public HttpResponseMessage AddNewVehicleModel([FromBody] VehicleModel vehicleModel)
         {
-            if (!ModelState.IsValid)
+            if ((vehicleModel.Name == null))
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
 
-            using (db)
-            {
-                db.VehicleModels.Add(new VehicleModel()
-                {
-                    Name = vehicleModel.Name,
-                    MakeId = vehicleModel.MakeId
-                });
+            var config = new MapperConfiguration(cfg => { cfg.CreateMap<VehicleModel, VehicleModelModel>(); });
+            this.Mapper = config.CreateMapper();
+            VehicleModelModel vehicleModelModel = this.Mapper.Map<VehicleModel, VehicleModelModel>(vehicleModel);
 
-                db.SaveChanges();
-            }
+            this.VehicleService.AddNewVehicleModel(vehicleModelModel);
+
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        [HttpPut]
+        [Route("api/updateVehicleModelName")]
+        public HttpResponseMessage UpdateVehicleModelName([FromBody] VehicleModelModel vehicleModelModel)
+        {
+            var updatedVehicleModelModel = this.VehicleService.UpdateVehicleModelName(vehicleModelModel);
+            if (updatedVehicleModelModel == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
 
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+        
         [HttpDelete]
         [Route("api/deleteVehicleModelById/{id}")]
         public HttpResponseMessage DeleteVehicleModelById(int id)
         {
-            VehicleModel vehicleModel = db.VehicleModels.Find(id);
-            db.Entry(vehicleModel).State = EntityState.Deleted;
-            db.SaveChanges();
+            this.VehicleService.DeleteVehicleModelById(id);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 

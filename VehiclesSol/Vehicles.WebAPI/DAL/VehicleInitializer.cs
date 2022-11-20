@@ -5,10 +5,11 @@ using System.Web;
 using System.Data.Entity;
 using Vehicles.WebAPI.Models;
 using Vehicles.Model;
+using Vehicles.Dal;
 
 namespace Vehicles.WebAPI.DAL
 {
-    public class VehicleInitializer : DropCreateDatabaseIfModelChanges<VehicleContext>
+    public class VehicleInitializer : CreateDatabaseIfNotExists<VehicleContext>
     {
         protected override void Seed(VehicleContext context)
         {
@@ -24,16 +25,16 @@ namespace Vehicles.WebAPI.DAL
             vehicleMakes.ForEach(s => context.VehicleMakes.Add(s));
             context.SaveChanges();
 
-            var vehicleModels = new List<VehicleModel>
+            var vehicleModels = new List<VehicleModelModel>
             {
-            new VehicleModel{MakeId=1,Name="T-Cross"},
-            new VehicleModel{MakeId=1,Name="Polo"},
-            new VehicleModel{MakeId=2,Name="X5"},
-            new VehicleModel{MakeId=2,Name="X6"},
-            new VehicleModel{MakeId=3,Name="C3"},
-            new VehicleModel{MakeId=3,Name="C4"},
-            new VehicleModel{MakeId=4,Name="Punto"},
-            new VehicleModel{MakeId=4,Name="Panda"}
+            new VehicleModelModel{MakeId=1,Name="T-Cross"},
+            new VehicleModelModel{MakeId=1,Name="Polo"},
+            new VehicleModelModel{MakeId=2,Name="X5"},
+            new VehicleModelModel{MakeId=2,Name="X6"},
+            new VehicleModelModel{MakeId=3,Name="C3"},
+            new VehicleModelModel{MakeId=3,Name="C4"},
+            new VehicleModelModel{MakeId=4,Name="Punto"},
+            new VehicleModelModel{MakeId=4,Name="Panda"}
             };
             vehicleModels.ForEach(s => context.VehicleModels.Add(s));
             context.SaveChanges();

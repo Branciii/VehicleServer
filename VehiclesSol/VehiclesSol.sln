@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vehicles.Model", "Vehicles.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vehicles.Common", "Vehicles.Common\Vehicles.Common.csproj", "{772CE498-CDD3-47B7-A3F1-DAEAF07AC441}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vehicles.Dal", "Vehicles.Dal\Vehicles.Dal.csproj", "{4019E79C-1471-4B04-991E-000C8918CCB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{772CE498-CDD3-47B7-A3F1-DAEAF07AC441}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{772CE498-CDD3-47B7-A3F1-DAEAF07AC441}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{772CE498-CDD3-47B7-A3F1-DAEAF07AC441}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4019E79C-1471-4B04-991E-000C8918CCB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4019E79C-1471-4B04-991E-000C8918CCB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4019E79C-1471-4B04-991E-000C8918CCB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4019E79C-1471-4B04-991E-000C8918CCB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
