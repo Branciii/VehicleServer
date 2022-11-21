@@ -12,6 +12,9 @@ namespace Vehicles.Service.Common
     {
         DbSet<VehicleModelModel> ReadAllVehicleMakes();
         Task<VehicleModelModel> ReadVehiclesModelByIdAsync(int id);
+        Task<List<VehicleModelModel>> ReadSortedVehicleModelsAsync(string sortOrder);
+        Task<List<VehicleModelModel>> ReadVehicleModelsByPageAsync(int pageNumber);
+        Task<List<VehicleModelModel>> ReadVehicleModelsByLetterAsync(string letter);
         Task<List<VehicleModelModel>> ReadVehicleModelByVehicleMakeNameAsync(string name);
         Task<bool> AddNewVehicleModelAsync(VehicleModelModel vehicleModelModel);
         Task<bool> UpdateVehicleModelNameAsync(VehicleModelModel vehicleModelModel);

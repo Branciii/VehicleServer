@@ -29,6 +29,32 @@ namespace Vehicles.Service
             return vehicleModelModel;
         }
 
+        public async Task<List<VehicleModelModel>> ReadSortedVehicleModelsAsync(string sortOrder)
+        {
+            var vehicleModels = from vm in db.VehicleModels
+                               select vm;
+
+            if (sortOrder == "desc")
+            {
+                vehicleModels = vehicleModels.OrderByDescending(vm => vm.Name);
+            }
+            else
+            {
+                vehicleModels = vehicleModels.OrderBy(vm => vm.Name);
+            }
+            return await vehicleModels.ToListAsync();
+        }
+
+        public async Task<List<VehicleModelModel>> ReadVehicleModelsByPageAsync(int pageNumber)
+        {
+            return await db.VehicleModels.OrderBy(vm => vm.Name).Skip((pageNumber - 1) * 3).Take(3).ToListAsync();
+        }
+
+        public async Task<List<VehicleModelModel>> ReadVehicleModelsByLetterAsync(string letter)
+        {
+            return await db.VehicleModels.Where(vm => vm.Name.Substring(0, letter.Length).ToUpper() == letter.ToUpper()).ToListAsync();
+        }
+
         public async Task<List<VehicleModelModel>> ReadVehicleModelByVehicleMakeNameAsync(string name)
         {
             var MakeId = from vm in db.VehicleMakes

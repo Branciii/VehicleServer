@@ -237,6 +237,12 @@
   <ItemGroup>
     <Content Include="App_Readme\readme.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Vehicles.Model.Common\Vehicles.Model.Common.csproj">
+      <Project>{6d3a4ecf-8f11-4ccc-bf8b-7cf9def2840f}</Project>
+      <Name>Vehicles.Model.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.5.0.1\build\net46\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.5.0.1\build\net46\Microsoft.Data.SqlClient.SNI.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
