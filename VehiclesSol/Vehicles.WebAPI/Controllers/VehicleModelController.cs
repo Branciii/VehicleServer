@@ -26,7 +26,7 @@ namespace Vehicles.WebAPI.Controllers
         [Route("api/readAllVehicleModels")]
         public HttpResponseMessage ReadAllVehicleModels()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, this.VehicleService.ReadAllVehicleMakes());
+            return Request.CreateResponse(HttpStatusCode.OK, this.VehicleService.ReadAllVehicleModels());
         }
 
         [HttpGet]

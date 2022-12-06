@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using Vehicles.Model;
 
-namespace Vehicles.Service.Common
+namespace Vehicles.Repository.Common
 {
-    public interface IVehicleModelService
+    public interface IVehicleModelRepository
     {
         DbSet<VehicleModelModel> ReadAllVehicleModels();
         Task<VehicleModelModel> ReadVehiclesModelByIdAsync(int id);

@@ -236,10 +236,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Vehicles.Dal\Vehicles.Dal.csproj">
-      <Project>{4019e79c-1471-4b04-991e-000c8918ccb0}</Project>
-      <Name>Vehicles.Dal</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Vehicles.Model\Vehicles.Model.csproj">
       <Project>{e6cb2163-343c-47d3-889e-e0c6f257b01c}</Project>
       <Name>Vehicles.Model</Name>

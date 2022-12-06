@@ -8,6 +8,8 @@ using Ninject.Web.Common;
 using Ninject.Web.Common.WebHost;
 using Vehicles.Service.Common;
 using Vehicles.Service;
+using Vehicles.Repository.Common;
+using Vehicles.Repository;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Vehicles.WebAPI.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Vehicles.WebAPI.App_Start.NinjectWebCommon), "Stop")]
@@ -45,6 +47,9 @@ namespace Vehicles.WebAPI.App_Start
         {
             kernel.Bind<IVehicleMakeService>().To<VehicleMakeService>();
             kernel.Bind<IVehicleModelService>().To<VehicleModelService>();
+
+            kernel.Bind<IVehicleMakeRepository>().To<VehicleMakeRepository>();
+            kernel.Bind<IVehicleModelRepository>().To<VehicleModelRepository>();
         }
 
 

@@ -302,6 +302,14 @@
       <Project>{e6cb2163-343c-47d3-889e-e0c6f257b01c}</Project>
       <Name>Vehicles.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Vehicles.Repository.Common\Vehicles.Repository.Common.csproj">
+      <Project>{70b7a909-e953-4fb1-9217-d0d371ab217d}</Project>
+      <Name>Vehicles.Repository.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vehicles.Repository\Vehicles.Repository.csproj">
+      <Project>{eccfabe0-eae0-4f4d-8497-08594a251cd5}</Project>
+      <Name>Vehicles.Repository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Vehicles.Service.Common\Vehicles.Service.Common.csproj">
       <Project>{513ff212-2aae-47a3-9bca-3c8dff66d888}</Project>
       <Name>Vehicles.Service.Common</Name>
