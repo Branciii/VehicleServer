@@ -19,6 +19,11 @@ namespace Vehicles.Service
             this.VehicleRepository = vehicleRepository;
         }
 
+        public async Task<List<VehicleMakeModel>> FindAsync(string sortOrder, int pageNumber, string searchString)
+        {
+            return await this.VehicleRepository.FindAsync(sortOrder, pageNumber, searchString);
+        }
+
         public DbSet<VehicleMakeModel> ReadAllVehicleMakes()
         {
             return this.VehicleRepository.ReadAllVehicleMakes();

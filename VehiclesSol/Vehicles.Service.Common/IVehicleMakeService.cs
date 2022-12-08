@@ -11,6 +11,7 @@ namespace Vehicles.Service.Common
     public interface IVehicleMakeService
     {
         DbSet<VehicleMakeModel> ReadAllVehicleMakes();
+        Task<List<VehicleMakeModel>> FindAsync(string sortOrder, int pageNumber, string searchString);
         Task<List<VehicleMakeModel>> ReadSortedVehicleMakesAsync(string sortOrder);
         Task<List<VehicleMakeModel>> ReadVehicleMakesByPageAsync(int pageNumber);
         Task<List<VehicleMakeModel>> ReadVehicleMakesByLetterAsync(string letter);

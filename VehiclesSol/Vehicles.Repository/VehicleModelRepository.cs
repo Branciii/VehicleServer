@@ -7,6 +7,7 @@ using Vehicles.Repository.Common;
 using Vehicles.Model;
 using System.Data.Entity;
 using Vehicles.Dal;
+using Vehicles.Common;
 
 namespace Vehicles.Repository
 {
@@ -16,6 +17,24 @@ namespace Vehicles.Repository
         public DbSet<VehicleModelModel> ReadAllVehicleModels()
         {
             return db.VehicleModels;
+        }
+
+        public async Task<List<VehicleModelModel>> FindAsync(string sortOrder, int pageNumber, string searchString)
+        {
+            var vehicleModels = from vm in db.VehicleModels
+                               select vm;
+            if (searchString != null)
+            {
+                vehicleModels = vehicleModels.Where(vm => vm.Name.ToLower().Contains(searchString.ToLower()));
+            }
+
+            if (sortOrder.ToLower() == "desc")
+                vehicleModels = vehicleModels.OrderByDescending(vm => vm.Name);
+            else
+                vehicleModels = vehicleModels.OrderBy(vm => vm.Name);
+
+            Pager<VehicleModelModel> pager = new Pager<VehicleModelModel>();
+            return await pager.CreatePaginatedListAsync(vehicleModels.AsNoTracking(), pageNumber);
         }
 
         public async Task<VehicleModelModel> ReadVehiclesModelByIdAsync(int id)

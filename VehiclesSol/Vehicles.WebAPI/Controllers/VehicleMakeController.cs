@@ -24,6 +24,13 @@ namespace Vehicles.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("api/searchVehicleMakes")]
+        public async Task<HttpResponseMessage> FindAsync([FromBody] SearchParams searchParams)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.FindAsync(searchParams.SortOrder, searchParams.PageNumber, searchParams.SearchString));
+        }
+
+        [HttpGet]
         [Route("api/readAllVehicleMakes")]
         public HttpResponseMessage ReadAllVehicleMakes()
         {

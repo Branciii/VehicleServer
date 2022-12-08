@@ -11,6 +11,7 @@ namespace Vehicles.Service.Common
     public interface IVehicleModelService
     {
         DbSet<VehicleModelModel> ReadAllVehicleModels();
+        Task<List<VehicleModelModel>> FindAsync(string sortOrder, int pageNumber, string searchString);
         Task<VehicleModelModel> ReadVehiclesModelByIdAsync(int id);
         Task<List<VehicleModelModel>> ReadSortedVehicleModelsAsync(string sortOrder);
         Task<List<VehicleModelModel>> ReadVehicleModelsByPageAsync(int pageNumber);

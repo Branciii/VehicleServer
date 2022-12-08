@@ -17,6 +17,10 @@ namespace Vehicles.Service
         {
             this.VehicleRepository = vehicleRepository;
         }
+        public async Task<List<VehicleModelModel>> FindAsync(string sortOrder, int pageNumber, string searchString)
+        {
+            return await this.VehicleRepository.FindAsync(sortOrder, pageNumber, searchString);
+        }
         public DbSet<VehicleModelModel> ReadAllVehicleModels()
         {
             return this.VehicleRepository.ReadAllVehicleModels();
