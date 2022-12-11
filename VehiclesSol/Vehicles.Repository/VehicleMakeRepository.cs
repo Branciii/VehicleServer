@@ -22,7 +22,7 @@ namespace Vehicles.Repository
         {
             var vehicleMakes = from vm in db.VehicleMakes
                            select vm;
-            if (searchString != null)
+            if (searchString != null && searchString != "")
             {
                 vehicleMakes = vehicleMakes.Where(vm => vm.Name.ToLower().Contains(searchString.ToLower()));
             }

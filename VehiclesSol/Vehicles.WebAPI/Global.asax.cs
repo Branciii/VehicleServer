@@ -12,7 +12,8 @@ using AutoMapper;
 using Ninject;
 //using Vehicles.Service;
 //using Vehicles.Repository;
-//using Vehicles.Model;
+using Vehicles.Model;
+using Vehicles.WebAPI.Models;
 
 namespace Vehicles.WebAPI
 {

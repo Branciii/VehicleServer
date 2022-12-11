@@ -23,7 +23,7 @@ namespace Vehicles.Repository
         {
             var vehicleModels = from vm in db.VehicleModels
                                select vm;
-            if (searchString != null)
+            if (searchString != null && searchString != "")
             {
                 vehicleModels = vehicleModels.Where(vm => vm.Name.ToLower().Contains(searchString.ToLower()));
             }

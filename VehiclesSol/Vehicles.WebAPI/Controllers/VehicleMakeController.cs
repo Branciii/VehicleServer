@@ -18,16 +18,25 @@ namespace Vehicles.WebAPI.Controllers
         private IVehicleMakeService VehicleService { get; set; }
         private IMapper Mapper { get; set; }
 
-        public VehicleMakeController(IVehicleMakeService vehicleService)
+        public VehicleMakeController(IVehicleMakeService vehicleService, IMapper mapper)
         {
             this.VehicleService = vehicleService;
+            this.Mapper = mapper;
         }
 
         [HttpGet]
         [Route("api/searchVehicleMakes")]
         public async Task<HttpResponseMessage> FindAsync([FromBody] SearchParams searchParams)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.FindAsync(searchParams.SortOrder, searchParams.PageNumber, searchParams.SearchString));
+            var vehicleMakes = await this.VehicleService.FindAsync(searchParams.SortOrder, searchParams.PageNumber, searchParams.SearchString);
+            if (!vehicleMakes.Any()) //empty
+            {
+                return Request.CreateResponse(HttpStatusCode.NoContent);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, vehicleMakes);
+            }
         }
 
         [HttpGet]
@@ -77,13 +86,11 @@ namespace Vehicles.WebAPI.Controllers
             if (vehicleMake.Name == null)
                 return Request.CreateResponse(HttpStatusCode.PreconditionFailed);
 
-            var config = new MapperConfiguration(cfg => { cfg.CreateMap<VehicleMake, VehicleMakeModel>(); });
-            this.Mapper = config.CreateMapper();
             VehicleMakeModel vehicleMakeModel = this.Mapper.Map<VehicleMake, VehicleMakeModel>(vehicleMake);
 
             await this.VehicleService.AddNewVehicleMakeAsync(vehicleMakeModel);
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.Created);
         }
 
         [HttpPut]
