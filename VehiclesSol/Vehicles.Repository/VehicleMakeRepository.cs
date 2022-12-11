@@ -27,34 +27,13 @@ namespace Vehicles.Repository
                 vehicleMakes = vehicleMakes.Where(vm => vm.Name.ToLower().Contains(searchString.ToLower()));
             }
 
-            if (sortOrder.ToLower() == "desc")
+            if (sortOrder != null && sortOrder.ToLower() == "desc")
                 vehicleMakes = vehicleMakes.OrderByDescending(vm => vm.Name);
             else
                 vehicleMakes = vehicleMakes.OrderBy(vm => vm.Name);
 
             Pager<VehicleMakeModel> pager = new Pager<VehicleMakeModel>();
             return await pager.CreatePaginatedListAsync(vehicleMakes.AsNoTracking(), pageNumber);
-        }
-
-        public async Task<List<VehicleMakeModel>> ReadSortedVehicleMakesAsync(string sortOrder)
-        {
-            var vehicleMakes = from vm in db.VehicleMakes
-                               select vm;
-
-            if (sortOrder == "desc")
-            {
-                vehicleMakes = vehicleMakes.OrderByDescending(vm => vm.Name);
-            }
-            else
-            {
-                vehicleMakes = vehicleMakes.OrderBy(vm => vm.Name);
-            }
-            return await vehicleMakes.ToListAsync();
-        }
-
-        public async Task<List<VehicleMakeModel>> ReadVehicleMakesByPageAsync(int pageNumber)
-        {
-            return await db.VehicleMakes.OrderBy(vm => vm.Name).Skip((pageNumber - 1) * 3).Take(3).ToListAsync();
         }
 
         public async Task<List<VehicleMakeModel>> ReadVehicleMakesByLetterAsync(string letter)

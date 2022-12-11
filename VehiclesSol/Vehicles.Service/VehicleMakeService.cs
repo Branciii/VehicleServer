@@ -29,16 +29,6 @@ namespace Vehicles.Service
             return this.VehicleRepository.ReadAllVehicleMakes();
         }
 
-        public async Task<List<VehicleMakeModel>> ReadSortedVehicleMakesAsync(string sortOrder)
-        {
-            return await this.VehicleRepository.ReadSortedVehicleMakesAsync(sortOrder);
-        }
-
-        public async Task<List<VehicleMakeModel>> ReadVehicleMakesByPageAsync(int pageNumber)
-        {
-            return await this.VehicleRepository.ReadVehicleMakesByPageAsync(pageNumber);
-        }
-
         public async Task<List<VehicleMakeModel>> ReadVehicleMakesByLetterAsync(string letter)
         {
             return await this.VehicleRepository.ReadVehicleMakesByLetterAsync(letter);

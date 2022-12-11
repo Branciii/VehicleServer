@@ -47,20 +47,6 @@ namespace Vehicles.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("api/readSortedVehicleMakes/{sortOrder}")]
-        public async Task<HttpResponseMessage> ReadSortedVehicleMakesAsync(string sortOrder)
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.ReadSortedVehicleMakesAsync(sortOrder));
-        }
-
-        [HttpGet]
-        [Route("api/readVehicleMakesByPage/{pageNumber}")]
-        public async Task<HttpResponseMessage> ReadVehicleMakesByPageAsync(int pageNumber)
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.ReadVehicleMakesByPageAsync(pageNumber));
-        }
-
-        [HttpGet]
         [Route("api/readVehicleMakesByLetter/{letter}")]
         public async Task<HttpResponseMessage> ReadVehicleMakesByLetterAsync(string letter)
         {

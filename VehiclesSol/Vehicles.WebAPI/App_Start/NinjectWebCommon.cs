@@ -36,8 +36,10 @@ namespace Vehicles.WebAPI.App_Start
         }
         private static IKernel CreateKernel()
         {
-            var settings = new NinjectSettings();
-            settings.LoadExtensions = true;
+            var settings = new NinjectSettings
+            {
+                LoadExtensions = true
+            };
             var kernel = new StandardKernel();
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IMapper>()

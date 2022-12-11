@@ -45,19 +45,6 @@ namespace Vehicles.WebAPI.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, this.VehicleService.ReadAllVehicleModels());
         }
 
-        [HttpGet]
-        [Route("api/readSortedVehicleModels/{sortOrder}")]
-        public async Task<HttpResponseMessage> ReadSortedVehicleModelsAsync(string sortOrder)
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.ReadSortedVehicleModelsAsync(sortOrder));
-        }
-
-        [HttpGet]
-        [Route("api/readVehicleModelsByPage/{pageNumber}")]
-        public async Task<HttpResponseMessage> ReadVehicleModelsByPageAsync(int pageNumber)
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.ReadVehicleModelsByPageAsync(pageNumber));
-        }
 
         [HttpGet]
         [Route("api/readVehicleModelsByLetter/{letter}")]

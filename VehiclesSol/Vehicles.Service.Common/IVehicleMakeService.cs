@@ -12,8 +12,6 @@ namespace Vehicles.Service.Common
     {
         DbSet<VehicleMakeModel> ReadAllVehicleMakes();
         Task<List<VehicleMakeModel>> FindAsync(string sortOrder, int pageNumber, string searchString);
-        Task<List<VehicleMakeModel>> ReadSortedVehicleMakesAsync(string sortOrder);
-        Task<List<VehicleMakeModel>> ReadVehicleMakesByPageAsync(int pageNumber);
         Task<List<VehicleMakeModel>> ReadVehicleMakesByLetterAsync(string letter);
         Task<VehicleMakeModel> ReadVehiclesMakeByIdAsync(int id);
         Task<bool> AddNewVehicleMakeAsync(VehicleMakeModel vehicleMakeModel);

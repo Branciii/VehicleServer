@@ -28,7 +28,7 @@ namespace Vehicles.Repository
                 vehicleModels = vehicleModels.Where(vm => vm.Name.ToLower().Contains(searchString.ToLower()));
             }
 
-            if (sortOrder.ToLower() == "desc")
+            if (sortOrder != null && sortOrder.ToLower() == "desc")
                 vehicleModels = vehicleModels.OrderByDescending(vm => vm.Name);
             else
                 vehicleModels = vehicleModels.OrderBy(vm => vm.Name);
@@ -46,27 +46,6 @@ namespace Vehicles.Repository
                 return null;
             }
             return vehicleModelModel;
-        }
-
-        public async Task<List<VehicleModelModel>> ReadSortedVehicleModelsAsync(string sortOrder)
-        {
-            var vehicleModels = from vm in db.VehicleModels
-                                select vm;
-
-            if (sortOrder == "desc")
-            {
-                vehicleModels = vehicleModels.OrderByDescending(vm => vm.Name);
-            }
-            else
-            {
-                vehicleModels = vehicleModels.OrderBy(vm => vm.Name);
-            }
-            return await vehicleModels.ToListAsync();
-        }
-
-        public async Task<List<VehicleModelModel>> ReadVehicleModelsByPageAsync(int pageNumber)
-        {
-            return await db.VehicleModels.OrderBy(vm => vm.Name).Skip((pageNumber - 1) * 3).Take(3).ToListAsync();
         }
 
         public async Task<List<VehicleModelModel>> ReadVehicleModelsByLetterAsync(string letter)
