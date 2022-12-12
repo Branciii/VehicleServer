@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vehicles.Service.Common;
-using Vehicles.Model;
 using System.Data.Entity;
 using Vehicles.Repository.Common;
 
@@ -17,36 +16,36 @@ namespace Vehicles.Service
         {
             this.VehicleRepository = vehicleRepository;
         }
-        public async Task<List<VehicleModelModel>> FindAsync(string sortOrder, int pageNumber, string searchString)
+        public async Task<List<Model.VehicleModel>> FindAsync(string sortOrder, int pageNumber, string searchString)
         {
             return await this.VehicleRepository.FindAsync(sortOrder, pageNumber, searchString);
         }
-        public DbSet<VehicleModelModel> ReadAllVehicleModels()
+        public DbSet<Model.VehicleModel> ReadAllVehicleModels()
         {
             return this.VehicleRepository.ReadAllVehicleModels();
         }
 
-        public async Task<VehicleModelModel> ReadVehiclesModelByIdAsync(int id)
+        public async Task<Model.VehicleModel> ReadVehiclesModelByIdAsync(int id)
         {
             return await this.VehicleRepository.ReadVehiclesModelByIdAsync(id);
         }
 
-        public async Task<List<VehicleModelModel>> ReadVehicleModelsByLetterAsync(string letter)
+        public async Task<List<Model.VehicleModel>> ReadVehicleModelsByLetterAsync(string letter)
         {
             return await this.VehicleRepository.ReadVehicleModelsByLetterAsync(letter);
         }
 
-        public async Task<List<VehicleModelModel>> ReadVehicleModelByVehicleMakeNameAsync(string name)
+        public async Task<List<Model.VehicleModel>> ReadVehicleModelByVehicleMakeNameAsync(string name)
         {
             return await this.VehicleRepository.ReadVehicleModelByVehicleMakeNameAsync(name);
         }
 
-        public async Task<bool> AddNewVehicleModelAsync(VehicleModelModel vehicleModelModel)
+        public async Task<bool> AddNewVehicleModelAsync(Model.VehicleModel vehicleModelModel)
         {
             return await this.VehicleRepository.AddNewVehicleModelAsync(vehicleModelModel);
         }
 
-        public async Task<bool> UpdateVehicleModelNameAsync(VehicleModelModel vehicleModelModel)
+        public async Task<bool> UpdateVehicleModelNameAsync(Model.VehicleModel vehicleModelModel)
         {
             return await this.VehicleRepository.UpdateVehicleModelNameAsync(vehicleModelModel);
         }

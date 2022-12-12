@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using AutoMapper;
-using Vehicles.Model;
 using Vehicles.WebAPI.Models;
 
 namespace Vehicles.WebAPI.App_Start
@@ -12,8 +11,8 @@ namespace Vehicles.WebAPI.App_Start
     {
           public AutomapperProfile()
         {
-            CreateMap<VehicleMake, VehicleMakeModel>();
-            CreateMap<VehicleModel, VehicleModelModel>();
+            CreateMap<VehicleMake, Model.VehicleMake>();
+            CreateMap<VehicleModel, Model.VehicleModel>();
         }
     }
 }

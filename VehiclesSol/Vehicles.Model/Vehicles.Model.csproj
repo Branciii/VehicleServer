@@ -242,8 +242,8 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VehicleMakeModel.cs" />
-    <Compile Include="VehicleModelModel.cs" />
+    <Compile Include="VehicleMake.cs" />
+    <Compile Include="VehicleModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

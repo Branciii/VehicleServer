@@ -13,30 +13,30 @@ namespace Vehicles.WebAPI.DAL
     {
         protected override void Seed(VehicleContext context)
         {
-            var vehicleMakes = new List<VehicleMakeModel>
+            var vehicleMakes = new List<Model.VehicleMake>
             {
-            new VehicleMakeModel{Name="Volkswagen"},
-            new VehicleMakeModel{Name="BMW"},
-            new VehicleMakeModel{Name="Citroen"},
-            new VehicleMakeModel{Name="Toyota"},
-            new VehicleMakeModel{Name="Fiat"}
+            new Model.VehicleMake{ Name="Volkswagen"},
+            new Model.VehicleMake{ Name="BMW"},
+            new Model.VehicleMake{ Name="Citroen"},
+            new Model.VehicleMake{ Name="Toyota"},
+            new Model.VehicleMake{ Name="Fiat"}
             };
 
             vehicleMakes.ForEach(s => context.VehicleMakes.Add(s));
             context.SaveChanges();
 
-            var vehicleModels = new List<VehicleModelModel>
+            var vehicleModels = new List<Model.VehicleModel>
             {
-            new VehicleModelModel{MakeId=1,Name="T-Cross"},
-            new VehicleModelModel{MakeId=1,Name="Polo"},
-            new VehicleModelModel{MakeId=2,Name="X5"},
-            new VehicleModelModel{MakeId=2,Name="X6"},
-            new VehicleModelModel{MakeId=3,Name="C3"},
-            new VehicleModelModel{MakeId=3,Name="C4"},
-            new VehicleModelModel{MakeId=4,Name="Yaris"},
-            new VehicleModelModel{MakeId=4,Name="Auris"},
-            new VehicleModelModel{MakeId=5,Name="Punto"},
-            new VehicleModelModel{MakeId=5,Name="Panda"}
+            new Model.VehicleModel{ MakeId=1, Name="T-Cross"},
+            new Model.VehicleModel{ MakeId=1, Name="Polo"},
+            new Model.VehicleModel{ MakeId=2, Name="X5"},
+            new Model.VehicleModel{ MakeId=2, Name="X6"},
+            new Model.VehicleModel{ MakeId=3, Name="C3"},
+            new Model.VehicleModel{ MakeId=3, Name="C4"},
+            new Model.VehicleModel{ MakeId=4, Name="Yaris"},
+            new Model.VehicleModel{ MakeId=4, Name="Auris"},
+            new Model.VehicleModel{ MakeId=5, Name="Punto"},
+            new Model.VehicleModel{ MakeId=5, Name="Panda"}
             };
             vehicleModels.ForEach(s => context.VehicleModels.Add(s));
             context.SaveChanges();

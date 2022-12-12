@@ -10,8 +10,8 @@ namespace Vehicles.Dal
         public VehicleContext() : base("VehicleContext")
         {
         }
-        public DbSet<VehicleMakeModel> VehicleMakes { get; set; }
-        public DbSet<VehicleModelModel> VehicleModels { get; set; }
+        public DbSet<VehicleMake> VehicleMakes { get; set; }
+        public DbSet<VehicleModel> VehicleModels { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

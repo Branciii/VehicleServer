@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vehicles.Model;
 using System.Data.Entity;
 
 namespace Vehicles.Repository.Common
 {
     public interface IVehicleMakeRepository
     {
-        DbSet<VehicleMakeModel> ReadAllVehicleMakes();
-        Task<List<VehicleMakeModel>> FindAsync(string sortOrder, int pageNumber, string searchString);
-        Task<List<VehicleMakeModel>> ReadVehicleMakesByLetterAsync(string letter);
-        Task<VehicleMakeModel> ReadVehiclesMakeByIdAsync(int id);
-        Task<bool> AddNewVehicleMakeAsync(VehicleMakeModel vehicleMakeModel);
-        Task<bool> UpdateVehicleMakeNameAsync(VehicleMakeModel vehicleMakeModel);
+        DbSet<Model.VehicleMake> ReadAllVehicleMakes();
+        Task<List<Model.VehicleMake>> FindAsync(string sortOrder, int pageNumber, string searchString);
+        Task<List<Model.VehicleMake>> ReadVehicleMakesByLetterAsync(string letter);
+        Task<Model.VehicleMake> ReadVehiclesMakeByIdAsync(int id);
+        Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMakeModel);
+        Task<bool> UpdateVehicleMakeNameAsync(Model.VehicleMake vehicleMakeModel);
         Task<bool> DeleteVehicleMakeByIdAsync(int id);
     }
 }

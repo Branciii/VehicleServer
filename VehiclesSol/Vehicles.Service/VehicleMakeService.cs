@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vehicles.Service.Common;
-using Vehicles.Model;
 using System.Data.Entity;
 using Vehicles.Repository.Common;
 
@@ -19,32 +18,32 @@ namespace Vehicles.Service
             this.VehicleRepository = vehicleRepository;
         }
 
-        public async Task<List<VehicleMakeModel>> FindAsync(string sortOrder, int pageNumber, string searchString)
+        public async Task<List<Model.VehicleMake>> FindAsync(string sortOrder, int pageNumber, string searchString)
         {
             return await this.VehicleRepository.FindAsync(sortOrder, pageNumber, searchString);
         }
 
-        public DbSet<VehicleMakeModel> ReadAllVehicleMakes()
+        public DbSet<Model.VehicleMake> ReadAllVehicleMakes()
         {
             return this.VehicleRepository.ReadAllVehicleMakes();
         }
 
-        public async Task<List<VehicleMakeModel>> ReadVehicleMakesByLetterAsync(string letter)
+        public async Task<List<Model.VehicleMake>> ReadVehicleMakesByLetterAsync(string letter)
         {
             return await this.VehicleRepository.ReadVehicleMakesByLetterAsync(letter);
         }
 
-        public async Task<VehicleMakeModel> ReadVehiclesMakeByIdAsync(int id)
+        public async Task<Model.VehicleMake> ReadVehiclesMakeByIdAsync(int id)
         {
             return await this.VehicleRepository.ReadVehiclesMakeByIdAsync(id);
         }
 
-        public async Task<bool> AddNewVehicleMakeAsync(VehicleMakeModel vehicleMakeModel)
+        public async Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMakeModel)
         {
             return await this.VehicleRepository.AddNewVehicleMakeAsync(vehicleMakeModel);
         }
 
-        public async Task<bool> UpdateVehicleMakeNameAsync(VehicleMakeModel vehicleMakeModel)
+        public async Task<bool> UpdateVehicleMakeNameAsync(Model.VehicleMake vehicleMakeModel)
         {
             return await this.VehicleRepository.UpdateVehicleMakeNameAsync(vehicleMakeModel);
         }

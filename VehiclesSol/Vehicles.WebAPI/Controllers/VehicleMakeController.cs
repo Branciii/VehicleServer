@@ -7,7 +7,6 @@ using System.Web.Http;
 using AutoMapper;
 using Vehicles.WebAPI.Models;
 using Vehicles.Service.Common;
-using Vehicles.Model;
 using System.Threading.Tasks;
 
 namespace Vehicles.WebAPI.Controllers
@@ -72,7 +71,7 @@ namespace Vehicles.WebAPI.Controllers
             if (vehicleMake.Name == null)
                 return Request.CreateResponse(HttpStatusCode.PreconditionFailed);
 
-            VehicleMakeModel vehicleMakeModel = this.Mapper.Map<VehicleMake, VehicleMakeModel>(vehicleMake);
+            Model.VehicleMake vehicleMakeModel = this.Mapper.Map<VehicleMake, Model.VehicleMake>(vehicleMake);
 
             await this.VehicleService.AddNewVehicleMakeAsync(vehicleMakeModel);
 
@@ -81,7 +80,7 @@ namespace Vehicles.WebAPI.Controllers
 
         [HttpPut]
         [Route("api/updateVehicleMakeName")]
-        public async Task<HttpResponseMessage> UpdateVehicleMakeNameAsync([FromBody] VehicleMakeModel vehicleMakeModel)
+        public async Task<HttpResponseMessage> UpdateVehicleMakeNameAsync([FromBody] Model.VehicleMake vehicleMakeModel)
         {
             if (await this.VehicleService.UpdateVehicleMakeNameAsync(vehicleMakeModel))
                 return Request.CreateResponse(HttpStatusCode.OK);

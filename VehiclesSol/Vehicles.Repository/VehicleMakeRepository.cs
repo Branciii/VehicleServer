@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Vehicles.Repository.Common;
 using Vehicles.Dal;
 using System.Data.Entity;
-using Vehicles.Model;
 using Vehicles.Common;
 
 namespace Vehicles.Repository
@@ -14,11 +13,11 @@ namespace Vehicles.Repository
     public class VehicleMakeRepository : IVehicleMakeRepository
     {
         private VehicleContext db = new VehicleContext();
-        public DbSet<VehicleMakeModel> ReadAllVehicleMakes()
+        public DbSet<Model.VehicleMake> ReadAllVehicleMakes()
         {
             return db.VehicleMakes;
         }
-        public async Task<List<VehicleMakeModel>> FindAsync(string sortOrder, int pageNumber, string searchString)
+        public async Task<List<Model.VehicleMake>> FindAsync(string sortOrder, int pageNumber, string searchString)
         {
             var vehicleMakes = from vm in db.VehicleMakes
                            select vm;
@@ -32,18 +31,18 @@ namespace Vehicles.Repository
             else
                 vehicleMakes = vehicleMakes.OrderBy(vm => vm.Name);
 
-            Pager<VehicleMakeModel> pager = new Pager<VehicleMakeModel>();
+            Pager<Model.VehicleMake> pager = new Pager<Model.VehicleMake>();
             return await pager.CreatePaginatedListAsync(vehicleMakes.AsNoTracking(), pageNumber);
         }
 
-        public async Task<List<VehicleMakeModel>> ReadVehicleMakesByLetterAsync(string letter)
+        public async Task<List<Model.VehicleMake>> ReadVehicleMakesByLetterAsync(string letter)
         {
             return await db.VehicleMakes.Where(vm => vm.Name.Substring(0, letter.Length).ToUpper() == letter.ToUpper()).ToListAsync();
         }
 
-        public async Task<VehicleMakeModel> ReadVehiclesMakeByIdAsync(int id)
+        public async Task<Model.VehicleMake> ReadVehiclesMakeByIdAsync(int id)
         {
-            VehicleMakeModel vehicleMakeModel = await db.VehicleMakes.FindAsync(id);
+            Model.VehicleMake vehicleMakeModel = await db.VehicleMakes.FindAsync(id);
 
             if (vehicleMakeModel == null)
             {
@@ -52,14 +51,14 @@ namespace Vehicles.Repository
             return vehicleMakeModel;
         }
 
-        public async Task<bool> AddNewVehicleMakeAsync(VehicleMakeModel vehicleMakeModel)
+        public async Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMakeModel)
         {
             db.VehicleMakes.Add(vehicleMakeModel);
             await db.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> UpdateVehicleMakeNameAsync(VehicleMakeModel vehicleMakeModel)
+        public async Task<bool> UpdateVehicleMakeNameAsync(Model.VehicleMake vehicleMakeModel)
         {
             var updatedVehicleMakeModel = await db.VehicleMakes.FindAsync(vehicleMakeModel.Id);
             if (updatedVehicleMakeModel == null)
@@ -82,7 +81,7 @@ namespace Vehicles.Repository
             var vehicleModels = from vm in db.VehicleModels
                                 where vm.MakeId.Equals(id)
                                 select vm;
-            foreach (VehicleModelModel vm in vehicleModels)
+            foreach (Model.VehicleModel vm in vehicleModels)
             {
                 db.Entry(vm).State = EntityState.Deleted;
             }
