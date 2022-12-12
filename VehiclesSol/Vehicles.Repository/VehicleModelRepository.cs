@@ -13,9 +13,9 @@ namespace Vehicles.Repository
     public class VehicleModelRepository : IVehicleModelRepository
     {
         private VehicleContext db = new VehicleContext();
-        public DbSet<Model.VehicleModel> ReadAllVehicleModels()
+        public async Task<List<Model.VehicleModel>> ReadAllVehicleModelsAsync()
         {
-            return db.VehicleModels;
+            return await db.VehicleModels.ToListAsync();
         }
 
         public async Task<List<Model.VehicleModel>> FindAsync(string sortOrder, int pageNumber, string searchString)

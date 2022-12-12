@@ -20,9 +20,9 @@ namespace Vehicles.Service
         {
             return await this.VehicleRepository.FindAsync(sortOrder, pageNumber, searchString);
         }
-        public DbSet<Model.VehicleModel> ReadAllVehicleModels()
+        public async Task<List<Model.VehicleModel>> ReadAllVehicleModelsAsync()
         {
-            return this.VehicleRepository.ReadAllVehicleModels();
+            return await this.VehicleRepository.ReadAllVehicleModelsAsync();
         }
 
         public async Task<Model.VehicleModel> ReadVehiclesModelByIdAsync(int id)

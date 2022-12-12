@@ -9,7 +9,7 @@ namespace Vehicles.Service.Common
 {
     public interface IVehicleMakeService
     {
-        DbSet<Model.VehicleMake> ReadAllVehicleMakes();
+        Task<List<Model.VehicleMake>> ReadAllVehicleMakesAsync();
         Task<List<Model.VehicleMake>> FindAsync(string sortOrder, int pageNumber, string searchString);
         Task<List<Model.VehicleMake>> ReadVehicleMakesByLetterAsync(string letter);
         Task<Model.VehicleMake> ReadVehiclesMakeByIdAsync(int id);

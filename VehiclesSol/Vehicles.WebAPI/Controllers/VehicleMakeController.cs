@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace Vehicles.WebAPI.Controllers
 {
-
     public class VehicleMakeController : ApiController
     {
         private IVehicleMakeService VehicleService { get; set; }
@@ -40,9 +39,9 @@ namespace Vehicles.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/readAllVehicleMakes")]
-        public HttpResponseMessage ReadAllVehicleMakes()
+        public async Task<HttpResponseMessage> ReadAllVehicleMakesAsync()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, this.VehicleService.ReadAllVehicleMakes());
+            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.ReadAllVehicleMakesAsync());
         }
 
         [HttpGet]

@@ -119,6 +119,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VehicleContext.cs" />
+    <Compile Include="VehicleInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Vehicles.Model\Vehicles.Model.csproj">

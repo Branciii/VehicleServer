@@ -13,9 +13,9 @@ namespace Vehicles.Repository
     public class VehicleMakeRepository : IVehicleMakeRepository
     {
         private VehicleContext db = new VehicleContext();
-        public DbSet<Model.VehicleMake> ReadAllVehicleMakes()
+        public async Task<List<Model.VehicleMake>> ReadAllVehicleMakesAsync()
         {
-            return db.VehicleMakes;
+            return await db.VehicleMakes.ToListAsync();
         }
         public async Task<List<Model.VehicleMake>> FindAsync(string sortOrder, int pageNumber, string searchString)
         {

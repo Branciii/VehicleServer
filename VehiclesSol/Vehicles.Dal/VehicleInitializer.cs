@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 using System.Data.Entity;
-using Vehicles.WebAPI.Models;
-using Vehicles.Model;
-using Vehicles.Dal;
 
-namespace Vehicles.WebAPI.DAL
+namespace Vehicles.Dal
 {
     public class VehicleInitializer : DropCreateDatabaseAlways<VehicleContext>
     {
@@ -40,7 +38,7 @@ namespace Vehicles.WebAPI.DAL
             };
             vehicleModels.ForEach(s => context.VehicleModels.Add(s));
             context.SaveChanges();
-           
+
         }
     }
 }

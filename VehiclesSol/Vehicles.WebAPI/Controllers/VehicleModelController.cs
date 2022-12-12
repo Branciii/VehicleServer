@@ -39,9 +39,9 @@ namespace Vehicles.WebAPI.Controllers
 
         [HttpGet]
         [Route("api/readAllVehicleModels")]
-        public HttpResponseMessage ReadAllVehicleModels()
+        public async Task<HttpResponseMessage> ReadAllVehicleModelsAsync()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, this.VehicleService.ReadAllVehicleModels());
+            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.ReadAllVehicleModelsAsync());
         }
 
 

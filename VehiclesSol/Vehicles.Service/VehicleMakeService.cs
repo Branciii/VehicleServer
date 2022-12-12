@@ -23,9 +23,9 @@ namespace Vehicles.Service
             return await this.VehicleRepository.FindAsync(sortOrder, pageNumber, searchString);
         }
 
-        public DbSet<Model.VehicleMake> ReadAllVehicleMakes()
+        public async Task<List<Model.VehicleMake>> ReadAllVehicleMakesAsync()
         {
-            return this.VehicleRepository.ReadAllVehicleMakes();
+            return await this.VehicleRepository.ReadAllVehicleMakesAsync();
         }
 
         public async Task<List<Model.VehicleMake>> ReadVehicleMakesByLetterAsync(string letter)
