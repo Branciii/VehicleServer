@@ -10,6 +10,7 @@ using Vehicles.Service.Common;
 using Vehicles.Service;
 using Vehicles.Repository.Common;
 using Vehicles.Repository;
+using Vehicles.Common;
 using AutoMapper;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Vehicles.WebAPI.App_Start.NinjectWebCommon), "Start")]
@@ -64,6 +65,11 @@ namespace Vehicles.WebAPI.App_Start
 
             kernel.Bind<IVehicleMakeRepository>().To<VehicleMakeRepository>();
             kernel.Bind<IVehicleModelRepository>().To<VehicleModelRepository>();
+
+            kernel.Bind(typeof(IFilter<>)).To(typeof(Filter<>));
+            kernel.Bind(typeof(ISorter<>)).To(typeof(Sorter<>));
+            kernel.Bind(typeof(IPager<>)).To(typeof(Pager<>));
+
         }
 
 

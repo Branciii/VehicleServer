@@ -9,7 +9,7 @@ namespace Vehicles.Service.Common
 {
     public interface IVehicleModelService
     {
-        Task<List<Model.VehicleModel>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString);
+        Task<List<Model.VehicleModel>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr);
         Task<bool> AddNewVehicleModelAsync(Model.VehicleModel vehicleModelModel);
         Task<bool> UpdateVehicleModelNameAsync(Model.VehicleModel vehicleModelModel);
         Task<bool> DeleteVehicleModelByIdAsync(int id);

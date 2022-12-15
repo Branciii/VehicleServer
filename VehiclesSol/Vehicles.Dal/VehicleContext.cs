@@ -2,7 +2,6 @@
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
-
 namespace Vehicles.Dal
 {
     public class VehicleContext : DbContext

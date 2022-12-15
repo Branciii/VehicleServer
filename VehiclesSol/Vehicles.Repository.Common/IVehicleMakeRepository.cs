@@ -9,7 +9,7 @@ namespace Vehicles.Repository.Common
 {
     public interface IVehicleMakeRepository
     {
-        Task<List<Model.VehicleMake>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString);
+        Task<List<Model.VehicleMake>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr);
         Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMakeModel);
         Task<bool> UpdateVehicleMakeNameAsync(Model.VehicleMake vehicleMakeModel);
         Task<bool> DeleteVehicleMakeByIdAsync(int id);

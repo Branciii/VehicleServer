@@ -14,13 +14,29 @@ namespace Vehicles.Repository
     {
         private VehicleContext db = new VehicleContext();
 
-        public async Task<List<Model.VehicleModel>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString)
+        private IFilter<Model.VehicleModel> Filter { get; set; }
+        private ISorter<Model.VehicleModel> Sorter { get; set; }
+        private IPager<Model.VehicleModel> Pager { get; set; }
+
+        public VehicleModelRepository(IFilter<Model.VehicleModel> filter,
+                                      ISorter<Model.VehicleModel> sorter,
+                                      IPager<Model.VehicleModel> pager)
+        {
+            this.Filter = filter;
+            this.Sorter = sorter;
+            this.Pager = pager;
+        }
+        public async Task<List<Model.VehicleModel>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr)
         {
             var vehicleModels = from vm in db.VehicleModels
                                select vm;
             if (searchString != null && searchString != "")
             {
-                vehicleModels = vehicleModels.Where(vm => vm.Name.ToLower().Contains(searchString.ToLower()));
+                if (searchAttr == null)
+                    searchAttr = "Name";
+                else
+                    searchAttr = char.ToUpper(searchAttr.First()) + searchAttr.Substring(1).ToLower();
+                vehicleModels = this.Filter.CreateFilteredList(vehicleModels, searchString, searchAttr);
             }
 
             if (sortingAttr == null)
@@ -28,11 +44,9 @@ namespace Vehicles.Repository
             else
                 sortingAttr = char.ToUpper(sortingAttr.First()) + sortingAttr.Substring(1).ToLower();
 
-            Sorter<Model.VehicleModel> sorter = new Sorter<Model.VehicleModel>();
-            vehicleModels = sorter.CreatePaginatedListAsync(vehicleModels, sortOrder, sortingAttr);
+            vehicleModels = this.Sorter.CreateSortedList(vehicleModels, sortOrder, sortingAttr);
 
-            Pager<Model.VehicleModel> pager = new Pager<Model.VehicleModel>();
-            return await pager.CreatePaginatedListAsync(vehicleModels.AsNoTracking(), pageNumber);
+            return await this.Pager.CreatePaginatedListAsync(vehicleModels.AsNoTracking(), pageNumber);
         }
 
         public async Task<bool> AddNewVehicleModelAsync(Model.VehicleModel vehicleModelModel)

@@ -14,7 +14,7 @@ namespace Vehicles.Dal
             var vehicleMakes = new List<Model.VehicleMake>
             {
             new Model.VehicleMake{ Name="Volkswagen", Abrv="aVW"},
-            new Model.VehicleMake{ Name="BMW"},
+            new Model.VehicleMake{ Name="BMW", Abrv="Z"},
             new Model.VehicleMake{ Name="Citroen"},
             new Model.VehicleMake{ Name="Toyota", Abrv="Tyt"},
             new Model.VehicleMake{ Name="Fiat", Abrv="ft"}

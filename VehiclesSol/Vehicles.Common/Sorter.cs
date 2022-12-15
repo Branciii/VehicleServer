@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Vehicles.Common
 {
-    public class Sorter<T>
+    public class Sorter<T> : ISorter<T>
     {
-        public IOrderedQueryable<T> CreatePaginatedListAsync(IQueryable<T> vehicles, string sortOrder, string sortingAttr)
+        public IOrderedQueryable<T> CreateSortedList(IQueryable<T> vehicles, string sortOrder, string sortingAttr)
         {
             var entityType = typeof(T);
             var propertyInfo = entityType.GetProperty(sortingAttr);

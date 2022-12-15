@@ -241,7 +241,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="CommonModule.cs" />
     <Compile Include="Filter.cs" />
+    <Compile Include="IFilter.cs" />
+    <Compile Include="IPager.cs" />
+    <Compile Include="ISorter.cs" />
     <Compile Include="Pager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sorter.cs" />

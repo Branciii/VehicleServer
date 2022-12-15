@@ -13,14 +13,29 @@ namespace Vehicles.Repository
     public class VehicleMakeRepository : IVehicleMakeRepository
     {
         private VehicleContext db = new VehicleContext();
-        public async Task<List<Model.VehicleMake>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString)
+        private IFilter<Model.VehicleMake> Filter { get; set; }
+        private ISorter<Model.VehicleMake> Sorter { get; set; }
+        private IPager<Model.VehicleMake> Pager { get; set; }
+
+        public VehicleMakeRepository(IFilter<Model.VehicleMake> filter,
+                                     ISorter<Model.VehicleMake> sorter,
+                                     IPager<Model.VehicleMake> pager)
+        {
+            this.Filter = filter;
+            this.Sorter = sorter;
+            this.Pager = pager;
+        }
+
+        public async Task<List<Model.VehicleMake>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr)
         {
             var vehicleMakes = from vm in db.VehicleMakes
                            select vm;
 
             if (searchString != null && searchString != "")
             {
-                vehicleMakes = vehicleMakes.Where(vm => vm.Name.ToLower().Contains(searchString.ToLower()));
+                if (searchAttr == null)
+                    searchAttr = "Name";
+                vehicleMakes = this.Filter.CreateFilteredList(vehicleMakes, searchString, searchAttr);
             }
 
             if (sortingAttr == null)
@@ -28,11 +43,9 @@ namespace Vehicles.Repository
             else
                 sortingAttr = char.ToUpper(sortingAttr.First()) + sortingAttr.Substring(1).ToLower();
 
-            Sorter<Model.VehicleMake> sorter = new Sorter<Model.VehicleMake>();
-            vehicleMakes = sorter.CreatePaginatedListAsync(vehicleMakes, sortOrder, sortingAttr);
+            vehicleMakes = this.Sorter.CreateSortedList(vehicleMakes, sortOrder, sortingAttr);
 
-            Pager<Model.VehicleMake> pager = new Pager<Model.VehicleMake>();
-            return await pager.CreatePaginatedListAsync(vehicleMakes.AsNoTracking(), pageNumber);
+            return await this.Pager.CreatePaginatedListAsync(vehicleMakes.AsNoTracking(), pageNumber);
         }
 
         public async Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMakeModel)

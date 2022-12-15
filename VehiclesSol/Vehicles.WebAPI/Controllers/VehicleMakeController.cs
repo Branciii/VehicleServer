@@ -22,7 +22,7 @@ namespace Vehicles.WebAPI.Controllers
             this.Mapper = mapper;
         }
 
-        /*[HttpGet]
+        [HttpGet]
         [Route("test")]
         public HttpResponseMessage Test()
         {
@@ -31,16 +31,16 @@ namespace Vehicles.WebAPI.Controllers
             var vehicleMakes = from vm in db.VehicleMakes
                                select vm;
 
-            Vehicles.Common.Sorter<Model.VehicleMake> sorter = new Vehicles.Common.Sorter<Model.VehicleMake>();
+            Vehicles.Common.Filter<Model.VehicleMake> filter = new Vehicles.Common.Filter<Model.VehicleMake>();
 
-            return Request.CreateResponse(HttpStatusCode.OK, sorter.TestSort(vehicleMakes, "ASC", "Abrv"));
-        }*/
+            return Request.CreateResponse(HttpStatusCode.OK, filter.CreateFilteredList(vehicleMakes, "o", "Name"));
+        }
 
         [HttpGet]
         [Route("api/searchVehicleMakes")]
         public async Task<HttpResponseMessage> FindAsync([FromBody] SearchParams searchParams)
         {
-            var vehicleMakes = await this.VehicleService.FindAsync(searchParams.SortOrder, searchParams.SortingAttr, searchParams.PageNumber, searchParams.SearchString);
+            var vehicleMakes = await this.VehicleService.FindAsync(searchParams.SortOrder, searchParams.SortingAttr, searchParams.PageNumber, searchParams.SearchString, searchParams.SearchAttr);
             if (!vehicleMakes.Any()) //empty
             {
                 return Request.CreateResponse(HttpStatusCode.NoContent);

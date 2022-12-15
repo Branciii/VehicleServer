@@ -18,9 +18,9 @@ namespace Vehicles.Service
             this.VehicleRepository = vehicleRepository;
         }
 
-        public async Task<List<Model.VehicleMake>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString)
+        public async Task<List<Model.VehicleMake>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr)
         {
-            return await this.VehicleRepository.FindAsync(sortOrder, sortingAttr, pageNumber, searchString);
+            return await this.VehicleRepository.FindAsync(sortOrder, sortingAttr, pageNumber, searchString, searchAttr);
         }
 
         public async Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMakeModel)
