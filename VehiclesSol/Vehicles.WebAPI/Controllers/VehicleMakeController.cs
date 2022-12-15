@@ -22,11 +22,25 @@ namespace Vehicles.WebAPI.Controllers
             this.Mapper = mapper;
         }
 
+        /*[HttpGet]
+        [Route("test")]
+        public HttpResponseMessage Test()
+        {
+            Vehicles.Dal.VehicleContext db = new Vehicles.Dal.VehicleContext();
+
+            var vehicleMakes = from vm in db.VehicleMakes
+                               select vm;
+
+            Vehicles.Common.Sorter<Model.VehicleMake> sorter = new Vehicles.Common.Sorter<Model.VehicleMake>();
+
+            return Request.CreateResponse(HttpStatusCode.OK, sorter.TestSort(vehicleMakes, "ASC", "Abrv"));
+        }*/
+
         [HttpGet]
         [Route("api/searchVehicleMakes")]
         public async Task<HttpResponseMessage> FindAsync([FromBody] SearchParams searchParams)
         {
-            var vehicleMakes = await this.VehicleService.FindAsync(searchParams.SortOrder, searchParams.PageNumber, searchParams.SearchString);
+            var vehicleMakes = await this.VehicleService.FindAsync(searchParams.SortOrder, searchParams.SortingAttr, searchParams.PageNumber, searchParams.SearchString);
             if (!vehicleMakes.Any()) //empty
             {
                 return Request.CreateResponse(HttpStatusCode.NoContent);
@@ -35,32 +49,6 @@ namespace Vehicles.WebAPI.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.OK, vehicleMakes);
             }
-        }
-
-        [HttpGet]
-        [Route("api/readAllVehicleMakes")]
-        public async Task<HttpResponseMessage> ReadAllVehicleMakesAsync()
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.ReadAllVehicleMakesAsync());
-        }
-
-        [HttpGet]
-        [Route("api/readVehicleMakesByLetter/{letter}")]
-        public async Task<HttpResponseMessage> ReadVehicleMakesByLetterAsync(string letter)
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.ReadVehicleMakesByLetterAsync(letter));
-        }
-
-        [HttpGet]
-        [Route("api/readVehicleMakeById/{id}")]
-        public async Task<HttpResponseMessage> ReadVehiclesMakeByIdAsync(int id)
-        {
-            var vehicleMakeModel = await this.VehicleService.ReadVehiclesMakeByIdAsync(id);
-            if (vehicleMakeModel == null)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-            return Request.CreateResponse(HttpStatusCode.OK, vehicleMakeModel);
         }
 
         [HttpPost]

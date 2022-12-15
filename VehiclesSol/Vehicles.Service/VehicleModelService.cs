@@ -16,28 +16,9 @@ namespace Vehicles.Service
         {
             this.VehicleRepository = vehicleRepository;
         }
-        public async Task<List<Model.VehicleModel>> FindAsync(string sortOrder, int pageNumber, string searchString)
+        public async Task<List<Model.VehicleModel>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString)
         {
-            return await this.VehicleRepository.FindAsync(sortOrder, pageNumber, searchString);
-        }
-        public async Task<List<Model.VehicleModel>> ReadAllVehicleModelsAsync()
-        {
-            return await this.VehicleRepository.ReadAllVehicleModelsAsync();
-        }
-
-        public async Task<Model.VehicleModel> ReadVehiclesModelByIdAsync(int id)
-        {
-            return await this.VehicleRepository.ReadVehiclesModelByIdAsync(id);
-        }
-
-        public async Task<List<Model.VehicleModel>> ReadVehicleModelsByLetterAsync(string letter)
-        {
-            return await this.VehicleRepository.ReadVehicleModelsByLetterAsync(letter);
-        }
-
-        public async Task<List<Model.VehicleModel>> ReadVehicleModelByVehicleMakeNameAsync(string name)
-        {
-            return await this.VehicleRepository.ReadVehicleModelByVehicleMakeNameAsync(name);
+            return await this.VehicleRepository.FindAsync(sortOrder, sortingAttr, pageNumber, searchString);
         }
 
         public async Task<bool> AddNewVehicleModelAsync(Model.VehicleModel vehicleModelModel)

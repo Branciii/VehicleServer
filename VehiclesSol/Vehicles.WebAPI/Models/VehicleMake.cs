@@ -8,6 +8,6 @@ namespace Vehicles.WebAPI.Models
     public class VehicleMake
     {
         public string Name { get; set; }
-        //public virtual ICollection<VehicleModel> VehicleModels { get; set; }
+        public string Abrv { get; set; }
     }
 }

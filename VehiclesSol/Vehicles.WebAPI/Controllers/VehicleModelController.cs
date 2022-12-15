@@ -26,7 +26,7 @@ namespace Vehicles.WebAPI.Controllers
         [Route("api/searchVehicleModels")]
         public async Task<HttpResponseMessage> FindAsync([FromBody] SearchParams searchParams)
         {
-            var vehicleModels = await this.VehicleService.FindAsync(searchParams.SortOrder, searchParams.PageNumber, searchParams.SearchString);
+            var vehicleModels = await this.VehicleService.FindAsync(searchParams.SortOrder, searchParams.SortingAttr, searchParams.PageNumber, searchParams.SearchString);
             if (!vehicleModels.Any()) //empty
             {
                 return Request.CreateResponse(HttpStatusCode.NoContent);
@@ -35,41 +35,6 @@ namespace Vehicles.WebAPI.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.OK, vehicleModels);
             }
-        }
-
-        [HttpGet]
-        [Route("api/readAllVehicleModels")]
-        public async Task<HttpResponseMessage> ReadAllVehicleModelsAsync()
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.ReadAllVehicleModelsAsync());
-        }
-
-
-        [HttpGet]
-        [Route("api/readVehicleModelsByLetter/{letter}")]
-        public async Task<HttpResponseMessage> ReadVehicleModelsByLetterAsync(string letter)
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.ReadVehicleModelsByLetterAsync(letter));
-        }
-
-
-        [HttpGet]
-        [Route("api/readVehicleModelById/{id}")]
-        public async Task<HttpResponseMessage> ReadVehiclesModelByIdAsync(int id)
-        {
-            var vehicleModelModel = await this.VehicleService.ReadVehiclesModelByIdAsync(id);
-            if (vehicleModelModel == null)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-            return Request.CreateResponse(HttpStatusCode.OK, vehicleModelModel);
-        }
-
-        [HttpGet]
-        [Route("api/readVehicleModelByVehicleMakeName/{name}")]
-        public async Task<HttpResponseMessage> ReadVehicleModelByVehicleMakeNameAsync(string name)
-        {
-            return Request.CreateResponse(HttpStatusCode.OK, await this.VehicleService.ReadVehicleModelByVehicleMakeNameAsync(name));
         }
 
         [HttpPost]

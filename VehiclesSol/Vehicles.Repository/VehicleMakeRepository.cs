@@ -13,42 +13,26 @@ namespace Vehicles.Repository
     public class VehicleMakeRepository : IVehicleMakeRepository
     {
         private VehicleContext db = new VehicleContext();
-        public async Task<List<Model.VehicleMake>> ReadAllVehicleMakesAsync()
-        {
-            return await db.VehicleMakes.ToListAsync();
-        }
-        public async Task<List<Model.VehicleMake>> FindAsync(string sortOrder, int pageNumber, string searchString)
+        public async Task<List<Model.VehicleMake>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString)
         {
             var vehicleMakes = from vm in db.VehicleMakes
                            select vm;
+
             if (searchString != null && searchString != "")
             {
                 vehicleMakes = vehicleMakes.Where(vm => vm.Name.ToLower().Contains(searchString.ToLower()));
             }
 
-            if (sortOrder != null && sortOrder.ToLower() == "desc")
-                vehicleMakes = vehicleMakes.OrderByDescending(vm => vm.Name);
+            if (sortingAttr == null)
+                sortingAttr = "Name";
             else
-                vehicleMakes = vehicleMakes.OrderBy(vm => vm.Name);
+                sortingAttr = char.ToUpper(sortingAttr.First()) + sortingAttr.Substring(1).ToLower();
+
+            Sorter<Model.VehicleMake> sorter = new Sorter<Model.VehicleMake>();
+            vehicleMakes = sorter.CreatePaginatedListAsync(vehicleMakes, sortOrder, sortingAttr);
 
             Pager<Model.VehicleMake> pager = new Pager<Model.VehicleMake>();
             return await pager.CreatePaginatedListAsync(vehicleMakes.AsNoTracking(), pageNumber);
-        }
-
-        public async Task<List<Model.VehicleMake>> ReadVehicleMakesByLetterAsync(string letter)
-        {
-            return await db.VehicleMakes.Where(vm => vm.Name.Substring(0, letter.Length).ToUpper() == letter.ToUpper()).ToListAsync();
-        }
-
-        public async Task<Model.VehicleMake> ReadVehiclesMakeByIdAsync(int id)
-        {
-            Model.VehicleMake vehicleMakeModel = await db.VehicleMakes.FindAsync(id);
-
-            if (vehicleMakeModel == null)
-            {
-                return null;
-            }
-            return vehicleMakeModel;
         }
 
         public async Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMakeModel)

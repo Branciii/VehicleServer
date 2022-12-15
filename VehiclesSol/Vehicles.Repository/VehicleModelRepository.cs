@@ -13,12 +13,8 @@ namespace Vehicles.Repository
     public class VehicleModelRepository : IVehicleModelRepository
     {
         private VehicleContext db = new VehicleContext();
-        public async Task<List<Model.VehicleModel>> ReadAllVehicleModelsAsync()
-        {
-            return await db.VehicleModels.ToListAsync();
-        }
 
-        public async Task<List<Model.VehicleModel>> FindAsync(string sortOrder, int pageNumber, string searchString)
+        public async Task<List<Model.VehicleModel>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString)
         {
             var vehicleModels = from vm in db.VehicleModels
                                select vm;
@@ -27,39 +23,16 @@ namespace Vehicles.Repository
                 vehicleModels = vehicleModels.Where(vm => vm.Name.ToLower().Contains(searchString.ToLower()));
             }
 
-            if (sortOrder != null && sortOrder.ToLower() == "desc")
-                vehicleModels = vehicleModels.OrderByDescending(vm => vm.Name);
+            if (sortingAttr == null)
+                sortingAttr = "Name";
             else
-                vehicleModels = vehicleModels.OrderBy(vm => vm.Name);
+                sortingAttr = char.ToUpper(sortingAttr.First()) + sortingAttr.Substring(1).ToLower();
+
+            Sorter<Model.VehicleModel> sorter = new Sorter<Model.VehicleModel>();
+            vehicleModels = sorter.CreatePaginatedListAsync(vehicleModels, sortOrder, sortingAttr);
 
             Pager<Model.VehicleModel> pager = new Pager<Model.VehicleModel>();
             return await pager.CreatePaginatedListAsync(vehicleModels.AsNoTracking(), pageNumber);
-        }
-
-        public async Task<Model.VehicleModel> ReadVehiclesModelByIdAsync(int id)
-        {
-            Model.VehicleModel vehicleModelModel = await db.VehicleModels.FindAsync(id);
-
-            if (vehicleModelModel == null)
-            {
-                return null;
-            }
-            return vehicleModelModel;
-        }
-
-        public async Task<List<Model.VehicleModel>> ReadVehicleModelsByLetterAsync(string letter)
-        {
-            return await db.VehicleModels.Where(vm => vm.Name.Substring(0, letter.Length).ToUpper() == letter.ToUpper()).ToListAsync();
-        }
-
-        public async Task<List<Model.VehicleModel>> ReadVehicleModelByVehicleMakeNameAsync(string name)
-        {
-            var MakeId = from vm in db.VehicleMakes
-                         where vm.Name.Equals(name)
-                         select vm.Id;
-            var vehicleModels = await db.VehicleModels.Where(vm => vm.MakeId == MakeId.FirstOrDefault()).ToListAsync();
-
-            return vehicleModels;
         }
 
         public async Task<bool> AddNewVehicleModelAsync(Model.VehicleModel vehicleModelModel)
