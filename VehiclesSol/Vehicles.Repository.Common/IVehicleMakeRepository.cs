@@ -10,8 +10,8 @@ namespace Vehicles.Repository.Common
     public interface IVehicleMakeRepository
     {
         Task<List<Model.VehicleMake>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr);
-        Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMakeModel);
-        Task<bool> UpdateVehicleMakeNameAsync(Model.VehicleMake vehicleMakeModel);
+        Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMake);
+        Task<bool> UpdateVehicleMakeNameAsync(Model.VehicleMake vehicleMake);
         Task<bool> DeleteVehicleMakeByIdAsync(int id);
     }
 }

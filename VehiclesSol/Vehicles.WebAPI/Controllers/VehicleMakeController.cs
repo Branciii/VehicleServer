@@ -23,20 +23,6 @@ namespace Vehicles.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("test")]
-        public HttpResponseMessage Test()
-        {
-            Vehicles.Dal.VehicleContext db = new Vehicles.Dal.VehicleContext();
-
-            var vehicleMakes = from vm in db.VehicleMakes
-                               select vm;
-
-            Vehicles.Common.Filter<Model.VehicleMake> filter = new Vehicles.Common.Filter<Model.VehicleMake>();
-
-            return Request.CreateResponse(HttpStatusCode.OK, filter.CreateFilteredList(vehicleMakes, "o", "Name"));
-        }
-
-        [HttpGet]
         [Route("api/searchVehicleMakes")]
         public async Task<HttpResponseMessage> FindAsync([FromBody] SearchParams searchParams)
         {

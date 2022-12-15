@@ -14,68 +14,43 @@ namespace Vehicles.Repository
     {
         private VehicleContext db = new VehicleContext();
 
-        private IFilter<Model.VehicleModel> Filter { get; set; }
-        private ISorter<Model.VehicleModel> Sorter { get; set; }
-        private IPager<Model.VehicleModel> Pager { get; set; }
+        private IGenericRepository<Model.VehicleModel> GenericRepository { get; set; }
 
-        public VehicleModelRepository(IFilter<Model.VehicleModel> filter,
-                                      ISorter<Model.VehicleModel> sorter,
-                                      IPager<Model.VehicleModel> pager)
+        public VehicleModelRepository(IGenericRepository<Model.VehicleModel> genericRepository)
         {
-            this.Filter = filter;
-            this.Sorter = sorter;
-            this.Pager = pager;
+            this.GenericRepository = genericRepository;
         }
         public async Task<List<Model.VehicleModel>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr)
         {
             var vehicleModels = from vm in db.VehicleModels
                                select vm;
-            if (searchString != null && searchString != "")
-            {
-                if (searchAttr == null)
-                    searchAttr = "Name";
-                else
-                    searchAttr = char.ToUpper(searchAttr.First()) + searchAttr.Substring(1).ToLower();
-                vehicleModels = this.Filter.CreateFilteredList(vehicleModels, searchString, searchAttr);
-            }
 
-            if (sortingAttr == null)
-                sortingAttr = "Name";
-            else
-                sortingAttr = char.ToUpper(sortingAttr.First()) + sortingAttr.Substring(1).ToLower();
-
-            vehicleModels = this.Sorter.CreateSortedList(vehicleModels, sortOrder, sortingAttr);
-
-            return await this.Pager.CreatePaginatedListAsync(vehicleModels.AsNoTracking(), pageNumber);
+            return await this.GenericRepository.FindAsync(vehicleModels, sortOrder, sortingAttr, pageNumber, searchString, searchAttr);
         }
 
-        public async Task<bool> AddNewVehicleModelAsync(Model.VehicleModel vehicleModelModel)
+        public async Task<bool> AddNewVehicleModelAsync(Model.VehicleModel vehicleModel)
         {
-            db.VehicleModels.Add(vehicleModelModel);
+            db.VehicleModels.Add(vehicleModel);
             await db.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> UpdateVehicleModelNameAsync(Model.VehicleModel vehicleModelModel)
+        public async Task<bool> UpdateVehicleModelNameAsync(Model.VehicleModel vehicleModel)
         {
-            var updatedVehicleModelModel = await db.VehicleModels.FindAsync(vehicleModelModel.Id);
-            if (updatedVehicleModelModel == null)
+            var updatedVehicleModel = await db.VehicleModels.FindAsync(vehicleModel.Id);
+            if (updatedVehicleModel == null)
             {
                 return false;
             }
-            updatedVehicleModelModel.Name = vehicleModelModel.Name;
+            updatedVehicleModel.Name = vehicleModel.Name;
             await db.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> DeleteVehicleModelByIdAsync(int id)
         {
-            var vehicleModelModel = await db.VehicleModels.FindAsync(id);
-            if (vehicleModelModel == null)
-                return false;
-            db.Entry(vehicleModelModel).State = EntityState.Deleted;
-            await db.SaveChangesAsync();
-            return true;
+            var vehicleModel = await db.VehicleModels.FindAsync(id);
+            return await this.GenericRepository.DeleteVehicleAsync(db, vehicleModel);
         }
     }
 }

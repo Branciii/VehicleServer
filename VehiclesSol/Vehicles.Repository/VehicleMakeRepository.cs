@@ -6,24 +6,17 @@ using System.Threading.Tasks;
 using Vehicles.Repository.Common;
 using Vehicles.Dal;
 using System.Data.Entity;
-using Vehicles.Common;
 
 namespace Vehicles.Repository
 {
     public class VehicleMakeRepository : IVehicleMakeRepository
     {
         private VehicleContext db = new VehicleContext();
-        private IFilter<Model.VehicleMake> Filter { get; set; }
-        private ISorter<Model.VehicleMake> Sorter { get; set; }
-        private IPager<Model.VehicleMake> Pager { get; set; }
+        private IGenericRepository<Model.VehicleMake> GenericRepository { get; set; }
 
-        public VehicleMakeRepository(IFilter<Model.VehicleMake> filter,
-                                     ISorter<Model.VehicleMake> sorter,
-                                     IPager<Model.VehicleMake> pager)
+        public VehicleMakeRepository(IGenericRepository<Model.VehicleMake> genericRepository)
         {
-            this.Filter = filter;
-            this.Sorter = sorter;
-            this.Pager = pager;
+            this.GenericRepository = genericRepository;
         }
 
         public async Task<List<Model.VehicleMake>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr)
@@ -31,48 +24,32 @@ namespace Vehicles.Repository
             var vehicleMakes = from vm in db.VehicleMakes
                            select vm;
 
-            if (searchString != null && searchString != "")
-            {
-                if (searchAttr == null)
-                    searchAttr = "Name";
-                vehicleMakes = this.Filter.CreateFilteredList(vehicleMakes, searchString, searchAttr);
-            }
-
-            if (sortingAttr == null)
-                sortingAttr = "Name";
-            else
-                sortingAttr = char.ToUpper(sortingAttr.First()) + sortingAttr.Substring(1).ToLower();
-
-            vehicleMakes = this.Sorter.CreateSortedList(vehicleMakes, sortOrder, sortingAttr);
-
-            return await this.Pager.CreatePaginatedListAsync(vehicleMakes.AsNoTracking(), pageNumber);
+            return await this.GenericRepository.FindAsync(vehicleMakes, sortOrder, sortingAttr, pageNumber, searchString, searchAttr);
         }
 
-        public async Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMakeModel)
+        public async Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMake)
         {
-            db.VehicleMakes.Add(vehicleMakeModel);
+            db.VehicleMakes.Add(vehicleMake);
             await db.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> UpdateVehicleMakeNameAsync(Model.VehicleMake vehicleMakeModel)
+        public async Task<bool> UpdateVehicleMakeNameAsync(Model.VehicleMake vehicleMake)
         {
-            var updatedVehicleMakeModel = await db.VehicleMakes.FindAsync(vehicleMakeModel.Id);
-            if (updatedVehicleMakeModel == null)
+            var updatedVehicleMake = await db.VehicleMakes.FindAsync(vehicleMake.Id);
+            if (updatedVehicleMake == null)
             {
                 return false;
             }
-            updatedVehicleMakeModel.Name = vehicleMakeModel.Name;
+            updatedVehicleMake.Name = vehicleMake.Name;
             await db.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> DeleteVehicleMakeByIdAsync(int id)
         {
-            var vehicleMakeModel = await db.VehicleMakes.FindAsync(id);
-            if (vehicleMakeModel == null)
-                return false;
-            db.Entry(vehicleMakeModel).State = EntityState.Deleted;
+            var vehicleMake = await db.VehicleMakes.FindAsync(id);
+            await this.GenericRepository.DeleteVehicleAsync(db, vehicleMake);
 
             // delete models referencing the vehicle make that's being deleted
             var vehicleModels = from vm in db.VehicleModels
