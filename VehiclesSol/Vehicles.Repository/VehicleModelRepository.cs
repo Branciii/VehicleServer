@@ -20,12 +20,12 @@ namespace Vehicles.Repository
         {
             this.GenericRepository = genericRepository;
         }
-        public async Task<List<Model.VehicleModel>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr)
+        public async Task<List<Model.VehicleModel>> FindAsync(Filter filter, Sorter sorter, Pager pager)
         {
             var vehicleModels = from vm in db.VehicleModels
                                select vm;
 
-            return await this.GenericRepository.FindAsync(vehicleModels, sortOrder, sortingAttr, pageNumber, searchString, searchAttr);
+            return await this.GenericRepository.FindAsync(vehicleModels, filter, sorter, pager);
         }
 
         public async Task<bool> AddNewVehicleModelAsync(Model.VehicleModel vehicleModel)

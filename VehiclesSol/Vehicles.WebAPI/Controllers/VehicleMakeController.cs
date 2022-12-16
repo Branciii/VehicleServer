@@ -26,7 +26,7 @@ namespace Vehicles.WebAPI.Controllers
         [Route("api/searchVehicleMakes")]
         public async Task<HttpResponseMessage> FindAsync([FromBody] SearchParams searchParams)
         {
-            var vehicleMakes = await this.VehicleService.FindAsync(searchParams.SortOrder, searchParams.SortingAttr, searchParams.PageNumber, searchParams.SearchString, searchParams.SearchAttr);
+            var vehicleMakes = await this.VehicleService.FindAsync(searchParams.Filter, searchParams.Sorter, searchParams.Pager);
             if (!vehicleMakes.Any()) //empty
             {
                 return Request.CreateResponse(HttpStatusCode.NoContent);

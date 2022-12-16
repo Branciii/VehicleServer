@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Vehicles.Repository.Common;
@@ -12,38 +14,84 @@ namespace Vehicles.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private IFilter<T> Filter { get; set; }
-        private ISorter<T> Sorter { get; set; }
-        private IPager<T> Pager { get; set; }
-
-        public GenericRepository(IFilter<T> filter,
-                                 ISorter<T> sorter,
-                                 IPager<T> pager)
+        public async Task<List<T>> FindAsync(IQueryable<T> vehicles, Filter filter, Sorter sorter, Pager pager)
         {
-            this.Filter = filter;
-            this.Sorter = sorter;
-            this.Pager = pager;
-        }
-
-        public async Task<List<T>> FindAsync(IQueryable<T> vehicles, string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr)
-        {
-            if (searchString != null && searchString != "")
+            if (filter != null)
             {
-                if (searchAttr == null)
-                    searchAttr = "Name";
-                else
-                    searchAttr = char.ToUpper(searchAttr.First()) + searchAttr.Substring(1).ToLower();
-                vehicles = this.Filter.CreateFilteredList(vehicles, searchString, searchAttr);
+                if (filter.SearchString != null && filter.SearchString != "")
+                {
+                    if (filter.SearchAttr == null)
+                        filter.SearchAttr = "Name";
+                    else
+                        filter.SearchAttr = char.ToUpper(filter.SearchAttr.First()) + filter.SearchAttr.Substring(1).ToLower();
+                    vehicles = CreateFilteredList(vehicles, filter.SearchString, filter.SearchAttr);
+                }
             }
 
-            if (sortingAttr == null)
-                sortingAttr = "Name";
+            if (sorter != null)
+            {
+                if (sorter.SortingAttr == null)
+                    sorter.SortingAttr = "Name";
+                else
+                    sorter.SortingAttr = char.ToUpper(sorter.SortingAttr.First()) + sorter.SortingAttr.Substring(1).ToLower();
+
+                vehicles = CreateSortedList(vehicles, sorter.SortingOrder, sorter.SortingAttr);
+            }
             else
-                sortingAttr = char.ToUpper(sortingAttr.First()) + sortingAttr.Substring(1).ToLower();
+                vehicles = CreateSortedList(vehicles, "asc", "Name");
 
-            vehicles = this.Sorter.CreateSortedList(vehicles, sortOrder, sortingAttr);
+            if (pager!=null)
+                return await vehicles.Skip((pager.PageNumber - 1) * 3).Take(3).ToListAsync();
+            else
+                return await vehicles.Skip(0).Take(3).ToListAsync();
+        }
 
-            return await this.Pager.CreatePaginatedListAsync(vehicles.AsNoTracking(), pageNumber);
+        public IQueryable<T> CreateFilteredList(IQueryable<T> vehicles, string searchString, string searchAttr)
+        {
+            Type entityType = typeof(T);
+            ParameterExpression arg = Expression.Parameter(entityType, "x");
+            MethodInfo containsMethod = typeof(string).GetMethod("Contains");
+
+            MemberExpression property = Expression.Property(arg, searchAttr);
+
+            MethodCallExpression call = Expression.Call(property, containsMethod, Expression.Constant(searchString.ToLower()));
+
+            Expression<Func<T, bool>> selector = Expression.Lambda<Func<T, bool>>(
+                            Expression.AndAlso(
+                                Expression.NotEqual(property, Expression.Constant(null)),
+                                call
+                            ),
+                            arg
+                        );
+
+            return vehicles.Where(selector);
+        }
+
+        public IOrderedQueryable<T> CreateSortedList(IQueryable<T> vehicles, string sortingOrder, string sortingAttr)
+        {
+            Type entityType = typeof(T);
+            PropertyInfo propertyInfo = entityType.GetProperty(sortingAttr);
+            ParameterExpression arg = Expression.Parameter(entityType, "x");
+            MemberExpression property = Expression.Property(arg, sortingAttr);
+
+            var selector = Expression.Lambda(property, new ParameterExpression[] { arg });
+
+            if (sortingOrder != null && sortingOrder.ToLower() == "desc")
+                sortingOrder = "OrderByDescending";
+            else
+                sortingOrder = "OrderBy";
+
+            MethodInfo method = typeof(Queryable).GetMethods()
+                 .Where(m => m.Name == sortingOrder)
+                 .Where(m =>
+                 {
+                     List<ParameterInfo> parameters = m.GetParameters().ToList();
+                     return parameters.Count == 2;
+                 }).Single();
+
+            MethodInfo genericMethod = method.MakeGenericMethod(entityType, propertyInfo.PropertyType);
+
+            return (IOrderedQueryable<T>)genericMethod.Invoke(genericMethod, new object[] { vehicles, selector });
         }
 
         public async Task<bool> DeleteVehicleAsync(VehicleContext vehicleContext, T vehicle)

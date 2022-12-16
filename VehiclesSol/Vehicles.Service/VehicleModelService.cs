@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vehicles.Service.Common;
-using System.Data.Entity;
+using Vehicles.Common;
 using Vehicles.Repository.Common;
 
 namespace Vehicles.Service
@@ -16,9 +16,9 @@ namespace Vehicles.Service
         {
             this.VehicleRepository = vehicleRepository;
         }
-        public async Task<List<Model.VehicleModel>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr)
+        public async Task<List<Model.VehicleModel>> FindAsync(Filter filter, Sorter sorter, Pager pager)
         {
-            return await this.VehicleRepository.FindAsync(sortOrder, sortingAttr, pageNumber, searchString, searchAttr);
+            return await this.VehicleRepository.FindAsync(filter, sorter, pager);
         }
 
         public async Task<bool> AddNewVehicleModelAsync(Model.VehicleModel vehicleModel)

@@ -66,13 +66,7 @@ namespace Vehicles.WebAPI.App_Start
             kernel.Bind<IVehicleMakeRepository>().To<VehicleMakeRepository>();
             kernel.Bind<IVehicleModelRepository>().To<VehicleModelRepository>();
             kernel.Bind(typeof(IGenericRepository<>)).To(typeof(GenericRepository<>));
-
-            kernel.Bind(typeof(IFilter<>)).To(typeof(Filter<>));
-            kernel.Bind(typeof(ISorter<>)).To(typeof(Sorter<>));
-            kernel.Bind(typeof(IPager<>)).To(typeof(Pager<>));
-
         }
-
 
     }
 }

@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace Vehicles.Common
 {
-    public class Pager<T> : IPager<T>
+    public class Pager
     {
-        public async Task<List<T>> CreatePaginatedListAsync(IQueryable<T> vehicles, int pageNumber)
-        {
-            return await vehicles.Skip((pageNumber - 1) * 3).Take(3).ToListAsync();
-        }
+        public int PageNumber { get; set; } = 1;
     }
 }

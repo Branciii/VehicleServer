@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.Entity;
+using Vehicles.Common;
 
 namespace Vehicles.Service.Common
 {
     public interface IVehicleModelService
     {
-        Task<List<Model.VehicleModel>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr);
+        Task<List<Model.VehicleModel>> FindAsync(Filter filter, Sorter sorter, Pager pager);
         Task<bool> AddNewVehicleModelAsync(Model.VehicleModel vehicleModel);
         Task<bool> UpdateVehicleModelNameAsync(Model.VehicleModel vehicleModel);
         Task<bool> DeleteVehicleModelByIdAsync(int id);

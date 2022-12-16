@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Vehicles.Repository.Common;
 using Vehicles.Dal;
 using System.Data.Entity;
+using Vehicles.Common;
 
 namespace Vehicles.Repository
 {
@@ -19,12 +20,12 @@ namespace Vehicles.Repository
             this.GenericRepository = genericRepository;
         }
 
-        public async Task<List<Model.VehicleMake>> FindAsync(string sortOrder, string sortingAttr, int pageNumber, string searchString, string searchAttr)
+        public async Task<List<Model.VehicleMake>> FindAsync(Filter filter, Sorter sorter, Pager pager)
         {
             var vehicleMakes = from vm in db.VehicleMakes
                            select vm;
 
-            return await this.GenericRepository.FindAsync(vehicleMakes, sortOrder, sortingAttr, pageNumber, searchString, searchAttr);
+            return await this.GenericRepository.FindAsync(vehicleMakes, filter, sorter, pager);
         }
 
         public async Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMake)

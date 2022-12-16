@@ -251,6 +251,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Vehicles.Common\Vehicles.Common.csproj">
+      <Project>{772ce498-cdd3-47b7-a3f1-daeaf07ac441}</Project>
+      <Name>Vehicles.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Vehicles.Model\Vehicles.Model.csproj">
       <Project>{e6cb2163-343c-47d3-889e-e0c6f257b01c}</Project>
       <Name>Vehicles.Model</Name>

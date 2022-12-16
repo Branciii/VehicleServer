@@ -254,6 +254,10 @@
     <Content Include="App_Readme\readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Vehicles.Common\Vehicles.Common.csproj">
+      <Project>{772ce498-cdd3-47b7-a3f1-daeaf07ac441}</Project>
+      <Name>Vehicles.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Vehicles.Dal\Vehicles.Dal.csproj">
       <Project>{4019e79c-1471-4b04-991e-000c8918ccb0}</Project>
       <Name>Vehicles.Dal</Name>
