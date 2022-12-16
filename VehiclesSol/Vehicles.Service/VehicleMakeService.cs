@@ -23,14 +23,14 @@ namespace Vehicles.Service
             return await this.VehicleRepository.FindAsync(sortOrder, sortingAttr, pageNumber, searchString, searchAttr);
         }
 
-        public async Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMakeModel)
+        public async Task<bool> AddNewVehicleMakeAsync(Model.VehicleMake vehicleMake)
         {
-            return await this.VehicleRepository.AddNewVehicleMakeAsync(vehicleMakeModel);
+            return await this.VehicleRepository.AddNewVehicleMakeAsync(vehicleMake);
         }
 
-        public async Task<bool> UpdateVehicleMakeNameAsync(Model.VehicleMake vehicleMakeModel)
+        public async Task<bool> UpdateVehicleMakeNameAsync(Model.VehicleMake vehicleMake)
         {
-            return await this.VehicleRepository.UpdateVehicleMakeNameAsync(vehicleMakeModel);
+            return await this.VehicleRepository.UpdateVehicleMakeNameAsync(vehicleMake);
         }
 
         public async Task<bool> DeleteVehicleMakeByIdAsync(int id)

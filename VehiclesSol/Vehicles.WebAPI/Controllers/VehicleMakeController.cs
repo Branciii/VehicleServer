@@ -44,18 +44,18 @@ namespace Vehicles.WebAPI.Controllers
             if (vehicleMake.Name == null)
                 return Request.CreateResponse(HttpStatusCode.PreconditionFailed);
 
-            Model.VehicleMake vehicleMakeModel = this.Mapper.Map<VehicleMake, Model.VehicleMake>(vehicleMake);
+            Model.VehicleMake vehicleMakeWithId = this.Mapper.Map<VehicleMake, Model.VehicleMake>(vehicleMake);
 
-            await this.VehicleService.AddNewVehicleMakeAsync(vehicleMakeModel);
+            await this.VehicleService.AddNewVehicleMakeAsync(vehicleMakeWithId);
 
             return Request.CreateResponse(HttpStatusCode.Created);
         }
 
         [HttpPut]
         [Route("api/updateVehicleMakeName")]
-        public async Task<HttpResponseMessage> UpdateVehicleMakeNameAsync([FromBody] Model.VehicleMake vehicleMakeModel)
+        public async Task<HttpResponseMessage> UpdateVehicleMakeNameAsync([FromBody] Model.VehicleMake vehicleMake)
         {
-            if (await this.VehicleService.UpdateVehicleMakeNameAsync(vehicleMakeModel))
+            if (await this.VehicleService.UpdateVehicleMakeNameAsync(vehicleMake))
                 return Request.CreateResponse(HttpStatusCode.OK);
 
             return Request.CreateResponse(HttpStatusCode.NotFound); 
