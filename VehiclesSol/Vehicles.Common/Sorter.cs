@@ -12,8 +12,8 @@ namespace Vehicles.Common
     {
         public IOrderedQueryable<T> CreateSortedList(IQueryable<T> vehicles, string sortOrder, string sortingAttr)
         {
-            var entityType = typeof(T);
-            var propertyInfo = entityType.GetProperty(sortingAttr);
+            Type entityType = typeof(T);
+            PropertyInfo propertyInfo = entityType.GetProperty(sortingAttr);
             ParameterExpression arg = Expression.Parameter(entityType, "x");
             MemberExpression property = Expression.Property(arg, sortingAttr);
 
@@ -24,18 +24,15 @@ namespace Vehicles.Common
             else
                 sortOrder = "OrderBy";
 
-            var enumarableType = typeof(Queryable);
-            var method = enumarableType.GetMethods()
-                 .Where(m => m.Name == sortOrder && m.IsGenericMethodDefinition)
+            MethodInfo method = typeof(Queryable).GetMethods()
+                 .Where(m => m.Name == sortOrder)
                  .Where(m =>
                  {
-                     var parameters = m.GetParameters().ToList();
+                     List<ParameterInfo> parameters = m.GetParameters().ToList();
                      return parameters.Count == 2;
                  }).Single();
 
-
-            MethodInfo genericMethod = method
-                 .MakeGenericMethod(entityType, propertyInfo.PropertyType);
+            MethodInfo genericMethod = method.MakeGenericMethod(entityType, propertyInfo.PropertyType);
 
             return (IOrderedQueryable<T>)genericMethod.Invoke(genericMethod, new object[] { vehicles, selector });
         }

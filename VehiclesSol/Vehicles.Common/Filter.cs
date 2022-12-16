@@ -13,11 +13,13 @@ namespace Vehicles.Common
     {
         public IQueryable<T> CreateFilteredList(IQueryable<T> vehicles, string searchString, string searchAttr)
         {
-            var entityType = typeof(T);
+            Type entityType = typeof(T);
             ParameterExpression arg = Expression.Parameter(entityType, "x");
-            MethodInfo containsMethod = typeof(string).GetMethod("Contains"); //method
-            var call = Expression.Call(Expression.Property(arg, searchAttr), containsMethod, Expression.Constant(searchString.ToLower()));
+            MethodInfo containsMethod = typeof(string).GetMethod("Contains");
+
             MemberExpression property = Expression.Property(arg, searchAttr);
+
+            MethodCallExpression call = Expression.Call(property, containsMethod, Expression.Constant(searchString.ToLower()));
 
             Expression<Func<T, bool>> selector = Expression.Lambda<Func<T, bool>> (
                             Expression.AndAlso(
