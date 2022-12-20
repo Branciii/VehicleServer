@@ -41,7 +41,7 @@ namespace Vehicles.WebAPI.Controllers
         [Route("api/addNewVehicleModel")]
         public async Task<HttpResponseMessage> AddNewVehicleModelAsync([FromBody] VehicleModel vehicleModel)
         {
-            if (vehicleModel.Name == null)
+            if (vehicleModel.Name == null && vehicleModel.MakeId != 0)
                 return Request.CreateResponse(HttpStatusCode.PreconditionFailed);
 
             Model.VehicleModel vehicleModelWithId = this.Mapper.Map<VehicleModel, Model.VehicleModel>(vehicleModel);

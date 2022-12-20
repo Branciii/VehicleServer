@@ -1,16 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
-
-namespace Vehicles.Dal
+namespace Vehicles.Dal.Migrations
 {
-    public class VehicleInitializer : DropCreateDatabaseAlways<VehicleContext>
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+    using Vehicles.Model;
+
+    internal sealed class Configuration : DbMigrationsConfiguration<Vehicles.Dal.VehicleContext>
     {
-        protected override void Seed(VehicleContext context)
+        public Configuration()
         {
+            AutomaticMigrationsEnabled = false;
+        }
+
+        protected override void Seed(Vehicles.Dal.VehicleContext context)
+        {
+            //  This method will be called after migrating to the latest version.
+
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+            //  to avoid creating duplicate seed data.
+
             var vehicleMakes = new List<Model.VehicleMake>
             {
             new Model.VehicleMake{ Name="Volkswagen", Abrv="aVW"},
@@ -20,7 +30,7 @@ namespace Vehicles.Dal
             new Model.VehicleMake{ Name="Fiat", Abrv="ft"}
             };
 
-            vehicleMakes.ForEach(s => context.VehicleMakes.Add(s));
+            vehicleMakes.ForEach(s => context.VehicleMakes.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
 
             var vehicleModels = new List<Model.VehicleModel>
@@ -36,9 +46,9 @@ namespace Vehicles.Dal
             new Model.VehicleModel{ MakeId=5, Name="Punto", Abrv="pnt"},
             new Model.VehicleModel{ MakeId=5, Name="Panda", Abrv="pnd"}
             };
-            vehicleModels.ForEach(s => context.VehicleModels.Add(s));
-            context.SaveChanges();
 
+            vehicleModels.ForEach(s => context.VehicleModels.AddOrUpdate(p => p.Name, s));
+            context.SaveChanges();
         }
     }
 }

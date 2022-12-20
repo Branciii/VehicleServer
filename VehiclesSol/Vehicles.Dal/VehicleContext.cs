@@ -15,6 +15,5 @@ namespace Vehicles.Dal
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
-
     }
 }

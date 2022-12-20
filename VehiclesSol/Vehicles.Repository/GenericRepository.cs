@@ -57,12 +57,12 @@ namespace Vehicles.Repository
             MethodCallExpression call = Expression.Call(property, containsMethod, Expression.Constant(searchString.ToLower()));
 
             Expression<Func<T, bool>> selector = Expression.Lambda<Func<T, bool>>(
-                            Expression.AndAlso(
-                                Expression.NotEqual(property, Expression.Constant(null)),
-                                call
-                            ),
-                            arg
-                        );
+                                                    Expression.AndAlso(
+                                                        Expression.NotEqual(property, Expression.Constant(null)),
+                                                        call
+                                                    ),
+                                                    arg
+                                                );
 
             return vehicles.Where(selector);
         }
